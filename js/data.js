@@ -16,10 +16,14 @@
   const ALBUM = { name: 'Udaipur Lakes', group: 'Udaipur Udaan', imgs: ['album-1', 'album-2', 'album-3', 'album-4', 'album-5'].map(I) };
 
   const tempo = (driver, rating, route) => ({
-    id: 'tt', name: 'AC Tempo Traveller', type: 'van', seats: '12 seats', ac: 'Air-conditioned', luggage: '12 small bags', driver, rating, route,
+    id: 'tt', name: 'AC Tempo Traveller', type: 'van', photos: VI.van, seats: '12 seats', ac: 'Air-conditioned', luggage: '12 small bags', driver, rating, route,
     features: ['Seat belts on every seat', 'GPS tracked with live link for family', 'First-aid kit onboard', 'Phone charging at each row'],
     access: [[L.part, 'Two steps to board, with a hand rail'], [L.ok, 'Front seats kept free for seniors'], [L.no, 'No wheelchair lift'], [L.ok, 'Trip manager helps with boarding and a folding walker fits in the boot']]
   });
+
+  const SI = ['stay-1','stay-2','stay-3','stay-4','stay-5','stay-6'].map(I);
+  const pick = (...i) => i.map(k => SI[k]);
+  const VI = { van: [I('tempo')], suv: [I('ertiga-1'), I('ertiga-2')], boat: [I('boat')] };
 
   const D = {
     /* ------------------------------------------------------------------ MANDU */
@@ -43,10 +47,10 @@
       notIncl: ['Monument entry tickets', 'Snacks between meals', 'Shopping and tips'],
       pickups: [['Palasia Square', '6:35 am', 1], ['Vijay Nagar Square', '6:20 am'], ['Indore Bus Stand, Gate 2', '6:00 am']],
       vehicles: [tempo('Dinesh P.', 4.7, 'Indore, Mandu, Indore'), {
-        id: 'ert', name: 'Ertiga', type: 'suv', seats: '6 seats', ac: 'Air-conditioned', luggage: '6 small bags', driver: 'Salim A.', rating: 4.8, route: 'Same route, smaller group',
+        id: 'ert', name: 'Ertiga', type: 'suv', photos: VI.suv, seats: '6 seats', ac: 'Air-conditioned', luggage: '6 small bags', driver: 'Salim A.', rating: 4.8, route: 'Same route, smaller group',
         features: ['Seat belts on every seat', 'GPS tracked with live link', 'Smooth ride on the ghat road'], access: [[L.ok, 'Low step, easy to board'], [L.ok, 'Folding wheelchair fits in the boot']] }],
       stay: {
-        name: 'MPT Malwa Resort', label: 'Lunch stop', kind: 'Mandu · lunch and rest, no overnight', sub: 'Garden lunch and an hour of rest', photos: [IMGS.mandu[0], IMGS.mandu[1]],
+        name: 'MPT Malwa Resort', label: 'Lunch stop', kind: 'Mandu · lunch and rest, no overnight', sub: 'Garden lunch and an hour of rest', photos: pick(0, 1, 2),
         note: 'A calm garden lunch and an hour in the shade before the afternoon walk.', times: 'Lunch 1:00 pm · Rest till 2:30 pm', meals: 'Lunch and evening tea',
         rating: { avg: 4.4, count: 63, dist: d5(34, 20, 7, 2, 0) },
         incl: ['Veg and Jain lunch', 'Evening tea', 'Garden seating', 'Clean washrooms', 'Parking for the group'], notIncl: ['Drinks and snacks outside the set menu', 'Overnight stay'],
@@ -78,10 +82,10 @@
       notIncl: ['Boat rides at the ghat', 'Abhishek and puja charges', 'Personal shopping', 'Snacks between meals'],
       pickups: [['Palasia Square', '6:35 am', 1], ['Vijay Nagar Square', '6:20 am'], ['Indore Bus Stand, Gate 2', '6:00 am']],
       vehicles: [tempo('Mahesh V.', 4.8, 'Indore, Maheshwar, Omkareshwar, Indore'), {
-        id: 'inn', name: 'Innova Crysta', type: 'suv', seats: '6 seats', ac: 'Air-conditioned', luggage: '6 small bags', driver: 'Farhan Q.', rating: 4.9, route: 'Same route, smaller group',
+        id: 'ert', name: 'Ertiga', type: 'suv', photos: VI.suv, seats: '6 seats', ac: 'Air-conditioned', luggage: '6 small bags', driver: 'Farhan Q.', rating: 4.9, route: 'Same route, smaller group',
         features: ['Seat belts on every seat', 'GPS tracked with live link', 'Driver who knows the Narmada road'], access: [[L.ok, 'Low step, easy to board'], [L.ok, 'Folding wheelchair fits in the boot'], [L.part, 'Rear row is tight for tall travellers']] }],
       stay: {
-        name: 'Narmada Heritage Stay', label: 'Stay', kind: 'Maheshwar · heritage stay near the ghat', sub: 'Shared rooms, 2 to a room', photos: [IMGS.mahesh[1], IMGS.mahesh[0]],
+        name: 'Narmada Heritage Stay', label: 'Stay', kind: 'Maheshwar · heritage stay near the ghat', sub: 'Shared rooms, 2 to a room', photos: pick(3, 4, 5),
         note: 'A heritage-style stay a short walk from the ghat and the fort. Rooms are twin-sharing and our group is kept on the same floor.', times: 'Check-in 4 pm · Check-out 8 am', meals: 'Dinner and breakfast',
         rating: { avg: 4.7, count: 91, dist: d5(68, 17, 5, 1, 0) },
         incl: ['Twin-sharing room, group on one floor', 'Dinner and breakfast', 'Hot water 24 hours', 'Courtyard seating', 'CCTV in corridors'], notIncl: ['Room service', 'Laundry', 'Meals outside the set menu'],
@@ -110,10 +114,10 @@
       notIncl: ['Bhasma Aarti pass', 'Sheeghra Darshan pass (about ₹250)', 'Puja items and offerings', 'Snacks between meals'],
       pickups: [['Palasia Square', '6:35 am', 1], ['Vijay Nagar Square', '6:20 am'], ['Indore Bus Stand, Gate 2', '6:00 am']],
       vehicles: [tempo('Ramesh K.', 4.8, 'Indore, Ujjain, Indore'), {
-        id: 'inn', name: 'Innova Crysta', type: 'suv', seats: '6 seats', ac: 'Air-conditioned', luggage: '6 small bags', driver: 'Imran S.', rating: 4.9, route: 'Same route, smaller group',
+        id: 'ert', name: 'Ertiga', type: 'suv', photos: VI.suv, seats: '6 seats', ac: 'Air-conditioned', luggage: '6 small bags', driver: 'Imran S.', rating: 4.9, route: 'Same route, smaller group',
         features: ['Seat belts on every seat', 'GPS tracked with live link', 'Quieter ride for older travellers'], access: [[L.ok, 'Low step, easy to board'], [L.ok, 'Folding wheelchair fits in the boot'], [L.part, 'Rear row is tight for tall travellers']] }],
       stay: {
-        name: 'Shipra Bhojanalay', label: 'Lunch stop', kind: 'Ujjain · lunch near the temples', sub: 'Veg and Jain thali', photos: [IMGS.ujjain[1], IMGS.ujjain[2]],
+        name: 'Shipra Bhojanalay', label: 'Lunch stop', kind: 'Ujjain · lunch near the temples', sub: 'Veg and Jain thali', photos: pick(2, 3, 0),
         note: 'A simple vegetarian restaurant ten minutes from Mahakal Lok, booked for our group so there is no waiting.', times: 'Lunch 12:30 pm · Rest till 1:45 pm', meals: 'Lunch and evening tea',
         rating: { avg: 4.5, count: 118, dist: d5(72, 33, 10, 3, 0) },
         incl: ['Veg and Jain thali', 'Evening tea', 'Reserved group table', 'Clean washrooms', 'Parking nearby'], notIncl: ['Sweets and extras', 'Overnight stay'],
@@ -149,7 +153,7 @@
         id: 'er', name: 'Electric rickshaw', type: 'erick', seats: '4 seats', ac: 'Open air', luggage: 'Small bags only', driver: 'Local driver', rating: 4.6, route: 'Haveli, Hawa Mahal and the bazaar lanes',
         features: ['Used only inside the Old City lanes', 'Quiet, no fumes', 'Trip manager rides alongside'], access: [[L.part, 'One high step to board'], [L.no, 'No space for a wheelchair'], [L.ok, 'Hand rails on both sides']] }],
       stay: {
-        name: 'Haveli Anaar', label: 'Stay', kind: 'Jaipur · heritage haveli in the Old City', sub: '2 nights, 2 to a room', photos: [IMGS.jaipur[1], IMGS.jaipur[0]],
+        name: 'Haveli Anaar', label: 'Stay', kind: 'Jaipur · heritage haveli in the Old City', sub: '2 nights, 2 to a room', photos: pick(5, 0, 4),
         note: 'Courtyard rooms with painted arches, a rooftop for chai and a kitchen that cooks for the group. Twin-sharing, one floor for our group.', times: 'Check-in 12 pm · Check-out 11 am', meals: '2 breakfasts, 2 dinners, 1 lunch',
         rating: { avg: 4.8, count: 142, dist: d5(118, 18, 4, 2, 0) },
         incl: ['Twin-sharing room, group on one floor', 'Breakfast and dinner', 'Rooftop chai', 'Wi-Fi', 'Hot water 24 hours'], notIncl: ['Laundry', 'Room service', 'Meals outside the set menu'],
@@ -181,10 +185,10 @@
       notIncl: ['City Palace entry ticket', 'Camera fee at the palace', 'Flights or trains to Udaipur', 'Personal shopping'],
       pickups: [['Udaipur Airport (Dabok)', '10:00 am', 1], ['Udaipur City Railway Station', '10:30 am'], ['Chetak Circle', '11:00 am']],
       vehicles: [tempo('Gopal M.', 4.8, 'Airport, haveli, gardens, airport'), {
-        id: 'bt', name: 'Lake Pichola sunset boat', type: 'boat', seats: '20 seats', ac: 'Open deck with canopy', luggage: 'Small bags only', driver: 'Boatman', rating: 4.7, route: 'City Palace jetty, Jag Mandir, back',
+        id: 'bt', name: 'Lake Pichola sunset boat', type: 'boat', photos: VI.boat, seats: '20 seats', ac: 'Open deck with canopy', luggage: 'Small bags only', driver: 'Boatman', rating: 4.7, route: 'City Palace jetty, Jag Mandir, back',
         features: ['Life jackets for everyone', 'Jag Mandir island stop', '45 to 60 minute ride'], access: [[L.part, 'Narrow steps down to the jetty'], [L.part, 'Boatman helps you step on and off'], [L.no, 'No wheelchair access']] }],
       stay: {
-        name: 'Pichola Pol Haveli', label: 'Stay', kind: 'Udaipur · lake-view haveli near City Palace', sub: '1 night, 2 to a room', photos: [IMGS.udaipur[0], IMGS.udaipur[1]],
+        name: 'Pichola Pol Haveli', label: 'Stay', kind: 'Udaipur · lake-view haveli near City Palace', sub: '1 night, 2 to a room', photos: pick(1, 5, 3),
         note: 'Rooms look out onto the lake and a rooftop restaurant serves dinner with a view of the island palaces. Twin-sharing, group on one floor.', times: 'Check-in 11 am · Check-out 11 am', meals: 'Dinner, breakfast and lunch',
         rating: { avg: 4.8, count: 126, dist: d5(104, 15, 5, 2, 0) },
         incl: ['Twin-sharing room, group on one floor', 'Dinner and breakfast', 'Rooftop restaurant', 'Wi-Fi', 'Hot water 24 hours'], notIncl: ['Laundry', 'Room service', 'Meals outside the set menu'],
@@ -219,7 +223,7 @@
       notIncl: ['Flights or trains to Kochi', 'Drinks other than bottled water', 'Tips for the boat crew', 'Personal shopping'],
       pickups: [['Kochi Airport (Nedumbassery)', '9:30 am', 1], ['Ernakulam Junction', '10:30 am'], ['Fort Kochi', '11:00 am']],
       vehicles: [tempo('Sajeev N.', 4.9, 'Kochi, Alappuzha, Kumarakom, Kochi'), {
-        id: 'cn', name: 'Village canoe', type: 'boat', seats: '6 seats', ac: 'Open air', luggage: 'No luggage', driver: 'Boatman', rating: 4.8, route: 'Jetty, village canals, jetty',
+        id: 'cn', name: 'Village canoe', type: 'boat', photos: VI.boat, seats: '6 seats', ac: 'Open air', luggage: 'No luggage', driver: 'Boatman', rating: 4.8, route: 'Jetty, village canals, jetty',
         features: ['Life jackets for everyone', 'About 45 minutes through narrow canals', 'Quiet and low to the water'], access: [[L.part, 'Low seat, crew helps you step in'], [L.no, 'No wheelchair access']] }],
       stay: {
         name: 'Kuttanad Rani Houseboat', label: 'Stay', kind: 'Alappuzha · private AC houseboat', sub: '1 night, twin-sharing cabins', photos: [IMGS.kerala[1], IMGS.kerala[0]],

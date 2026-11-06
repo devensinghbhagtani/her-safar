@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Her Safar - App Prototype v5</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@500;700&family=Noto+Sans+Gujarati:wght@500;700&family=Noto+Sans+Tamil:wght@500;700&family=Noto+Sans+Telugu:wght@500;700&family=Noto+Sans+Bengali:wght@500;700&family=Noto+Sans+Kannada:wght@500;700&family=Noto+Sans+Malayalam:wght@500;700&family=Noto+Sans+Gurmukhi:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -165,8 +165,6 @@ img{-webkit-user-drag:none}
 .garr.l{left:10px}.garr.r{right:10px}
 .hero .ib{z-index:3}
 .vill{background:var(--tint);border-radius:22px;padding:10px 14px;margin:12px 0}.vill svg{display:block;width:100%;height:auto;max-height:110px}
-.typec.pic{padding:10px 6px 12px}.typec.pic .pil{width:100%}.typec.pic .pil svg{display:block;width:100%;height:auto}
-.typec.pic.on{background:var(--tint);border-color:var(--pri);color:var(--pri)}
 .bdg{width:54px;height:54px;flex:none}.bdg svg{display:block;width:100%;height:100%}
 .bdg.off{filter:grayscale(1);opacity:.45}
 .rv{padding:10px 0;border-bottom:1.5px solid #EEF0F5}.rv:last-child{border:0}
@@ -188,6 +186,26 @@ img{-webkit-user-drag:none}
 .pstamp.locked{filter:grayscale(1) opacity(.5) drop-shadow(0 2px 4px rgba(40,0,73,.1))}
 .pstamp .lk{position:absolute;top:14px;right:16px;width:22px;height:22px;color:var(--pri);background:rgba(255,255,255,.9);border-radius:50%;padding:3px;display:flex}
 .pstamp .lk svg{width:100%;height:100%}
+
+.typec.pic{position:relative;padding:0;height:150px;overflow:hidden;border-radius:22px;color:#fff;justify-content:flex-end;align-items:flex-start;border:3px solid transparent}
+.typec.pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.8)}
+.typec.pic .shd{position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,0,40,0) 40%,rgba(20,0,40,.8))}
+.typec.pic b{position:relative;padding:0 10px 10px;font-size:14px}
+.typec.pic .ck{position:absolute;top:8px;right:8px;width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.85);color:transparent;display:flex;align-items:center;justify-content:center;border:2px solid #fff}
+.typec.pic.on{background:var(--pri);border-color:var(--org);color:#fff}.typec.pic.on img{filter:none}.typec.pic.on .ck{background:var(--org);color:#fff}
+/* phones and small tablets: show only the screen, no mockup */
+@media (max-width:820px),(pointer:coarse){
+ body{background:var(--bg)}
+ .top-bar,#list,#note,#gal{display:none!important}
+ .exp{display:block;padding:0}
+ .stage{padding:0;background:none;border-radius:0;position:static;width:100%;max-width:100vw;justify-self:stretch}
+ #live{width:100%}
+ .phone{width:100%;max-width:560px;height:100vh;height:100dvh;margin:0 auto;border-radius:0;box-shadow:none}
+ .status{display:none}
+ .body{padding-top:calc(16px + env(safe-area-inset-top))}
+ .foot{padding-bottom:calc(16px + env(safe-area-inset-bottom))}
+ .nav{padding-bottom:calc(14px + env(safe-area-inset-bottom))}
+}
 </style>
 </head>
 <body>
@@ -260,7 +278,7 @@ udaipur:`<defs><linearGradient id="g6" x1="0" y1="0" x2="0" y2="1"><stop offset=
 
 
 /* ======== state ======== */
-const ST={lang:'en',flow:'new',returning:false,who:'me',rel:'Son',phone:'98270 12345',name:'Sangeeta Verma',age:'45',city:'Indore',stage:'home',c1:'Once or twice',c2:'A little new',c3:'Same-day',freeT:['Weekends','Specific dates'],types:['Spiritual','Heritage'],also:[],budget:'₹2,000 to ₹5,000',food:'Veg',acc:[],part:false,sort:0,q:'',trip:'mahesh',pick:0,veh:0};
+const ST={lang:'en',flow:'new',returning:false,who:'me',rel:'Son',phone:'98270 12345',name:'Sangeeta Verma',age:'45',city:'Indore',stage:'home',c1:'Once or twice',c2:'A little new',c3:'Same-day',freeT:['Weekends','Specific dates'],types:['Spiritual','Heritage'],also:[],budget:'₹2,000 to ₹5,000',food:'Veg',acc:[],part:false,sort:0,q:'',trip:'mahesh',pick:0,veh:0,tf:'All'};
 const LANGS=[['en','English','English','Continue'],['hi','हिन्दी','Hindi','आगे बढ़ें'],['mr','मराठी','Marathi','पुढे जा'],['gu','ગુજરાતી','Gujarati','આગળ વધો'],['ta','தமிழ்','Tamil','தொடரவும்'],['te','తెలుగు','Telugu','కొనసాగించండి'],['bn','বাংলা','Bengali','এগিয়ে যান'],['kn','ಕನ್ನಡ','Kannada','ಮುಂದುವರಿಸಿ'],['ml','മലയാളം','Malayalam','തുടരുക'],['pa','ਪੰਜਾਬੀ','Punjabi','ਅੱਗੇ ਵਧੋ']];
 const langName=()=>(LANGS.find(l=>l[0]===ST.lang)||LANGS[0])[1];
 const me=()=>ST.who==='me';
@@ -297,6 +315,7 @@ const tcRow=t=>`<div class="tr" data-go="detail" data-trip="${t.k}"><div class="
 const steps=n=>`<div class="steps">${[1,2,3,4,5,6,7].map(i=>`<i class="${i<=n?'on':''}"></i>`).join('')}</div>`;
 const skip=to=>`<button class="skip" data-go="${to}">Skip</button>`;
 const topb=(title,n,right)=>`<div class="tp"><button class="ib" data-back>${ic('back')}</button>${n?steps(n):`<b>${title||''}</b>`}${right||'<span style="width:40px"></span>'}</div>`;
+const pgh=t=>`<div class="row sb" style="margin:2px 0 12px"><h2 class="disp" style="font-size:20px">${t}</h2><button class="ib" data-go="notifications" style="width:36px;height:36px">${ic('bell',18)}<i class="dot"></i></button></div>`;
 const hdr=()=>`<div class="hd">${logoH(32)}<button class="ib" data-go="notifications">${ic('bell')}<i class="dot"></i></button></div>`;
 const chip=(l,on,set)=>`<button class="chip ${on?'on':''}" data-set="${set}">${l}</button>`;
 const tchip=(l,on,key)=>`<button class="chip ${on?'on':''}" data-tog="${key}|${l}">${l}</button>`;
@@ -367,9 +386,9 @@ return `${topb('',5,skip('taste'))}<h1 class="disp">When ${W('are you','is she')
 <div class="row sb card" style="margin-top:12px"><div><b>Leave days ${W('you','she')} can take</b><p class="xs mut">Optional</p></div><div class="row g12"><span class="ib">-</span><b>1</b><span class="ib">+</span></div></div>`},
 foot:()=>`<button class="btn" data-go="taste">Continue</button>`});
 
-add('taste','Onboarding','Trip type and budget',`Three main trip types shown as illustrated cards: Spiritual, Cultural, Heritage, plus optional extras. Whatever is picked here is auto-selected in Discover. Skippable.`,{
+add('taste','Onboarding','Trip type and budget',`Three main trip types shown as photo cards: Spiritual, Cultural, Heritage, plus optional extras. Whatever is picked here is auto-selected in Discover. Skippable.`,{
 body:()=>`${topb('',6,skip('foodacc'))}<h1 class="disp">What sounds like<br>${W('your','her')} kind of trip?</h1>
-<div class="row g12" style="margin-top:18px">${[['Spiritual',ILLUS.spiritual],['Cultural',ILLUS.cultural],['Heritage',ILLUS.heritage]].map(x=>`<button class="typec pic ${ST.types.includes(x[0])?'on':''}" data-tog="types|${x[0]}"><span class="pil">${x[1]()}</span>${x[0]}</button>`).join('')}</div>
+<div class="row g12" style="margin-top:18px">${[['Spiritual','mahakal-3'],['Cultural','jaipur-2'],['Heritage','mandu-1']].map(x=>`<button class="typec pic ${ST.types.includes(x[0])?'on':''}" data-tog="types|${x[0]}"><img src="assets/img/${x[1]}.jpg" alt="" draggable="false"><span class="shd"></span><span class="ck">${ic('check',14)}</span><b>${x[0]}</b></button>`).join('')}</div>
 <p class="lab">Also interested in</p><div class="chips">${['Nature','Beaches','Wellness','Shopping'].map(x=>tchip(x,ST.also.includes(x),'also')).join('')}</div>
 <p class="lab">Comfortable budget per trip</p><div class="chips">${['Under ₹2,000','₹2,000 to ₹5,000','₹5,000 to ₹15,000','₹15,000+'].map(x=>chip(x,ST.budget===x,'budget='+x)).join('')}</div>`,
 foot:()=>`<button class="btn" data-go="foodacc">Continue</button>`});
@@ -402,19 +421,19 @@ let l=Object.values(T).filter(t=>(!ST.types.length||t.types.some(x=>ST.types.inc
 l.sort((a,b)=>ST.sort===0?a.o-b.o:ST.sort===1?a.p-b.p:b.p-a.p);
 return `<div class="row sb" style="margin:12px 0"><p class="sm mut">${l.length} trips match</p><button class="sm" style="font-weight:700;color:var(--pri)" data-cyc="sort|3">Sort: ${sorts[ST.sort]} ▾</button></div>${l.map(tcRow).join('')||'<p class="mut">No trips found. Try another word or type.</p>'}`};
 add('discover','Home & browse','Discover',`Search is a normal text box right here: type a place and the list below filters instantly, with no separate search page. The placeholder is one line. Type chips start from the onboarding choices and can be changed; sort works.`,{nav:'discover',
-body:()=>`${hdr()}<h2 class="disp" style="margin:10px 0 14px">Discover trips</h2><div class="row"><div class="field srch" style="flex:1;min-width:0">${ic('search',18)}<input data-in="q" placeholder="Where to? Jaipur, Mandu" value="${esc(ST.q)}" style="border:0;outline:0;background:none;font:inherit;font-size:14px;font-weight:500;margin:0;width:100%;min-width:0;text-overflow:ellipsis;white-space:nowrap"></div><button class="ib" style="width:50px;height:50px;border-radius:18px;background:var(--pri);color:#fff">${ic('filter')}</button></div>
+body:()=>`${pgh('Discover trips')}<div class="row"><div class="field srch" style="flex:1;min-width:0">${ic('search',18)}<input data-in="q" placeholder="Where to? Jaipur, Mandu" value="${esc(ST.q)}" style="border:0;outline:0;background:none;font:inherit;font-size:14px;font-weight:500;margin:0;width:100%;min-width:0;text-overflow:ellipsis;white-space:nowrap"></div><button class="ib" style="width:50px;height:50px;border-radius:18px;background:var(--pri);color:#fff">${ic('filter')}</button></div>
 <div class="row" style="margin-top:14px">${['Spiritual','Cultural','Heritage'].map(x=>`<button class="chip ${ST.types.includes(x)?'on':''}" data-tog="types|${x}" style="flex:1;justify-content:center;padding:10px 6px">${x}</button>`).join('')}</div>
 <div class="hs" style="margin-top:2px"><span class="chip t">${ic('cal',15)} Nov to Dec</span><span class="chip t">${ST.budget}</span><span class="chip t">Duration</span></div>
 <div id="dlist">${discList()}</div>`});
 
-add('trips','Home & browse','My Trips',`Fixed order by trip date: Live, then Upcoming (soonest first), then Past. Unread badge and one-tap Open group on each card. Chat recency lives in Notifications, so old trips never jump to the top.`,{nav:'trips',
-body:()=>`${hdr()}<div class="row sb" style="margin:10px 0 12px"><h2 class="disp">My Trips</h2><span class="sm" style="font-weight:700;color:var(--pri)">Sort: Date ▾</span></div>
-<div class="hs"><span class="chip on">All</span><span class="chip">Live</span><span class="chip">Upcoming</span><span class="chip">Past</span></div>
-<div class="card t row g12" style="margin:12px 0;box-shadow:none" data-go="pickup" data-trip="mahesh"><span class="av o">${ic('pin',18)}</span><div style="flex:1"><b class="sm">Needs your action</b><p class="xs">Choose a pickup point for Maheshwar</p></div>${ic('chev',18)}</div>
-${sh('Live now')}<div class="card o" data-go="live" style="cursor:pointer"><div class="row sb"><span class="chip sm on" style="background:var(--org);border-color:var(--org)"><span class="rdot" style="background:#fff"></span>LIVE · Day 2 of 3</span><button class="ib" data-go="chat" style="background:#fff">${ic('chat',18)}<span class="badge" style="position:absolute;top:-6px;right:-6px">3</span></button></div><h4 style="margin-top:10px">Jaipur Heritage Weekend</h4><p class="sm mut">Group: Jaipur Heritage Dec '26 · 11 women</p></div>
-${sh('Upcoming')}<div class="col"><div class="card" data-go="hubUp" data-trip="mahesh"><div class="row g12">${thumb('maheshwar',64)}<div style="flex:1"><h4>Maheshwar and Omkareshwar</h4><p class="sm mut">28-29 Nov · in 22 days</p><p class="xs" style="margin-top:3px;font-weight:700;color:var(--org)">Group opens 15 Nov</p></div></div></div>
-<div class="card" data-go="hubOpen" data-trip="ujjain"><div class="row g12">${thumb('ujjain',64)}<div style="flex:1"><h4>Ujjain Mahakal Darshan</h4><p class="sm mut">Sun 6 Dec · in 30 days</p><p class="xs" style="margin-top:3px;font-weight:700;color:var(--pri)">Group is open · 2 new</p></div><button class="ib" data-go="hubOpen" data-trip="ujjain">${ic('chat',18)}</button></div></div></div>
-${sh('Past')}<div class="card"><div class="row g12"><div class="th" style="width:64px;height:64px"><img src="${HSD.ALBUM.imgs[0]}" alt="" draggable="false"></div><div style="flex:1" data-go="post"><h4>Udaipur Lakes</h4><p class="sm mut">10-12 Oct · Udaipur Udaan · 9 women</p></div><div class="col" style="align-items:center;gap:8px"><button class="ib" data-go="chat">${ic('chat',18)}<span class="badge" style="position:absolute;top:-6px;right:-6px">12</span></button><button class="ib">${ic('dots',18)}</button></div></div></div>`});
+add('trips','Home & browse','My Trips',`Fixed order by trip date: Live, then Upcoming (soonest first), then Past. The filter chips work: tap All, Live, Upcoming or Past. Unread badge and one-tap Open group on each card.`,{nav:'trips',
+body:()=>{const f=ST.tf||'All',show=k=>f==='All'||f===k;return `${pgh('My Trips')}
+<div class="row" style="gap:6px;flex-wrap:nowrap">${['All','Live','Upcoming','Past'].map(x=>`<button class="chip ${f===x?'on':''}" data-set="tf=${x}" style="padding:8px 14px;font-size:13px">${x}</button>`).join('')}</div>
+${show('Upcoming')&&f!=='Past'?`<div class="card t row g12" style="margin:12px 0;box-shadow:none" data-go="pickup" data-trip="mahesh"><span class="av o">${ic('pin',18)}</span><div style="flex:1"><b class="sm">Needs your action</b><p class="xs">Choose a pickup point for Maheshwar</p></div>${ic('chev',18)}</div>`:''}
+${show('Live')?`${sh('Live now')}<div class="card o" data-go="live" style="cursor:pointer"><div class="row sb"><span class="chip sm on" style="background:var(--org);border-color:var(--org)"><span class="rdot" style="background:#fff"></span>LIVE · Day 2 of 3</span><button class="ib" data-go="chat" style="background:#fff">${ic('chat',18)}<span class="badge" style="position:absolute;top:-6px;right:-6px">3</span></button></div><h4 style="margin-top:10px">Jaipur Heritage Weekend</h4><p class="sm mut">Group: Jaipur Heritage Dec '26 · 11 women</p></div>`:''}
+${show('Upcoming')?`${sh('Upcoming')}<div class="col"><div class="card" data-go="hubUp" data-trip="mahesh"><div class="row g12">${thumb('maheshwar',64)}<div style="flex:1"><h4>Maheshwar and Omkareshwar</h4><p class="sm mut">28-29 Nov · in 22 days</p><p class="xs" style="margin-top:3px;font-weight:700;color:var(--org)">Group opens 15 Nov</p></div></div></div>
+<div class="card" data-go="hubOpen" data-trip="ujjain"><div class="row g12">${thumb('ujjain',64)}<div style="flex:1"><h4>Ujjain Mahakal Darshan</h4><p class="sm mut">Sun 6 Dec · in 30 days</p><p class="xs" style="margin-top:3px;font-weight:700;color:var(--pri)">Group is open · 2 new</p></div><button class="ib" data-go="hubOpen" data-trip="ujjain">${ic('chat',18)}</button></div></div></div>`:''}
+${show('Past')?`${sh('Past')}<div class="card"><div class="row g12"><div class="th" style="width:64px;height:64px"><img src="${HSD.ALBUM.imgs[0]}" alt="" draggable="false"></div><div style="flex:1" data-go="post"><h4>Udaipur Lakes</h4><p class="sm mut">10-12 Oct · Udaipur Udaan · 9 women</p></div><div class="col" style="align-items:center;gap:8px"><button class="ib" data-go="chat">${ic('chat',18)}<span class="badge" style="position:absolute;top:-6px;right:-6px">12</span></button><button class="ib">${ic('dots',18)}</button></div></div></div>`:''}`}});
 
 add('notifications','Home & browse','Notifications',`All group messages across trips, sorted by latest activity. Opened from the bell on any main screen.`,{
 body:()=>`${topb('Notifications')}<div class="tabs2" style="margin-top:0"><button class="on">All</button><button>Groups</button><button>Alerts</button></div>
@@ -435,7 +454,7 @@ ${sh('Food and accessibility')}<div class="card"><p class="xs mut" style="font-w
 foot:joinFoot});
 
 add('facility','Trip & join','Vehicle sheet',`Opens from a vehicle row. Each trip has its own vehicles, with driver, route, features, what the fare includes and an accessibility check.`,{base:'detail',
-sheet:()=>{const D=DD(),v=D.vehicles[Number(ST.veh)||0]||D.vehicles[0];return `<div class="row sb"><h3 class="disp">${v.name}</h3><button class="ib" data-back>${ic('x',18)}</button></div><div class="vill">${ILLUS.vehicles[v.type]()}</div>
+sheet:()=>{const D=DD(),v=D.vehicles[Number(ST.veh)||0]||D.vehicles[0];return `<div class="row sb"><h3 class="disp">${v.name}</h3><button class="ib" data-back>${ic('x',18)}</button></div><div style="margin:12px 0">${v.photos?slides(v.photos,170,22):`<div class="vill" style="margin:0">${ILLUS.vehicles[v.type]()}</div>`}</div>
 <p class="sm mut">${v.seats} · ${v.ac} · ${v.luggage}</p>
 <div class="card t row g12" style="margin:12px 0;box-shadow:none"><span class="av p">${ini(v.driver)}</span><div style="flex:1"><b class="sm">${v.driver}</b><p class="xs mut">${v.route}</p></div><span class="chip sm on">★ ${v.rating}</span></div>
 ${v.features.map(x=>`<div class="row" style="padding:5px 0">${ic('check',18)}<span class="sm" style="font-weight:600">${x}</span></div>`).join('')}
@@ -560,7 +579,7 @@ body:()=>`${topb('Trip album')}<h3 class="disp" style="font-size:20px;margin-bot
 
 /* ---- profile ---- */
 add('profile','Profile & more','Profile',`Profile is now the fourth tab in the bottom bar, so the top of every screen only has the logo and the notification bell.`,{nav:'profile',
-body:()=>`${hdr()}<h2 class="disp" style="margin:10px 0 14px">Profile</h2><div class="card" style="text-align:center"><span class="av l p" style="margin:0 auto">${ini(ST.name)}</span><h3 class="disp" style="margin-top:10px">${esc(ST.name)}</h3><p class="sm mut">${esc(ST.city)} · +91 ${esc(ST.phone)}</p><button class="chip t sm" style="margin-top:10px" data-go="passport">Naya Safar · 1 stamp</button></div>
+body:()=>`${pgh('Profile')}<div class="card" style="text-align:center"><span class="av l p" style="margin:0 auto">${ini(ST.name)}</span><h3 class="disp" style="margin-top:10px">${esc(ST.name)}</h3><p class="sm mut">${esc(ST.city)} · +91 ${esc(ST.phone)}</p><button class="chip t sm" style="margin-top:10px" data-go="passport">Naya Safar · 1 stamp</button></div>
 <div class="card" style="margin-top:12px;padding:4px 14px">${[['user','Personal details','Name, photo, age, city'],['globe','Language',langName()],['users','Family and helpers','Rohit (husband) can book for you'],['cal','Free days and trip taste',ST.types.join(', ')],['bag','Food and accessibility',ST.food+(ST.acc.length?' · '+ST.acc.join(', '):'')],['card','Payments and invoices',''],['bell','Notifications and WhatsApp',''],['shield','Safety, help and privacy','']].map(x=>`<div class="li"><span class="ico">${ic(x[0],18)}</span><div class="t">${x[1]}${x[2]?`<small>${x[2]}</small>`:''}</div>${ic('chev',16)}</div>`).join('')}</div><a class="lnk" style="color:var(--org)">Log out</a>`});
 
 add('passport','Profile & more','My Passport',`Replaces XP and levels with things she already understands: stamps in a passport, a simple title (Naya Safar, Musafir, Ghumakkad, Safar Sakhi), homely badges and a real reward. The collected stamp is a polaroid; the rest are locked and faded.`,{
