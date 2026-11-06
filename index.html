@@ -1,0 +1,641 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Her Safar - App Prototype v5</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@500;700&family=Noto+Sans+Gujarati:wght@500;700&family=Noto+Sans+Tamil:wght@500;700&family=Noto+Sans+Telugu:wght@500;700&family=Noto+Sans+Bengali:wght@500;700&family=Noto+Sans+Kannada:wght@500;700&family=Noto+Sans+Malayalam:wght@500;700&family=Noto+Sans+Gurmukhi:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F2F4F8;--ink:#15111C;--mut:#6C6A78;--line:#E4E7EE;--pri:#280049;--tint:#F0EAF7;--org:#F84E00;--orgt:#FFEBE2;--sh:0 6px 22px rgba(40,0,73,.07)}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'Plus Jakarta Sans','Noto Sans Devanagari','Noto Sans Gujarati','Noto Sans Tamil','Noto Sans Telugu','Noto Sans Bengali','Noto Sans Kannada','Noto Sans Malayalam','Noto Sans Gurmukhi',system-ui,sans-serif;background:linear-gradient(180deg,#EEF3FA,#E2EAF7);color:var(--ink);min-height:100vh}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+input{font-family:inherit}
+.disp{font-weight:700;letter-spacing:-.025em;line-height:1.15}
+
+/* viewer chrome */
+.top-bar{display:flex;align-items:center;gap:24px;padding:14px 28px;background:var(--pri);color:#fff;position:sticky;top:0;z-index:30;flex-wrap:wrap}
+.vlogo{font-size:20px;font-weight:800;letter-spacing:-.02em}.vlogo small{font-weight:500;font-size:12px;opacity:.7;margin-left:10px;letter-spacing:0}
+.tabs{display:flex;gap:6px;background:rgba(255,255,255,.14);padding:4px;border-radius:999px}
+.tabs button{padding:9px 18px;border-radius:999px;font-weight:700;font-size:14px;color:#fff}
+.tabs button.on{background:#fff;color:var(--pri)}
+.swatches{margin-left:auto;display:flex;gap:6px}.swatches i{width:18px;height:18px;border-radius:50%;border:1.5px solid rgba(255,255,255,.6)}
+.view{display:none}.view.on{display:block}
+.exp{display:grid;grid-template-columns:290px auto 330px;gap:36px;justify-content:center;align-items:start;padding:32px 24px 60px}
+.stage{background:linear-gradient(160deg,#D9E6FA,#EEF2F9);border-radius:48px;padding:40px 46px;position:sticky;top:90px}
+.panel{background:#fff;border-radius:24px;padding:18px;max-height:calc(100vh - 120px);overflow:auto;position:sticky;top:90px;box-shadow:var(--sh)}
+.panel h5{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);margin:14px 0 6px}.panel h5:first-child{margin-top:0}
+.sl{display:block;width:100%;text-align:left;padding:7px 10px;border-radius:10px;font-size:13.5px;font-weight:500}
+.sl:hover{background:var(--tint)}.sl.on{background:var(--pri);color:#fff}.sl span{opacity:.55;margin-right:8px;font-size:12px}
+.note{background:#fff;border-radius:24px;padding:22px;position:sticky;top:90px;box-shadow:var(--sh)}
+.note h3{font-size:24px;margin:6px 0 10px}.note p{font-size:14.5px;line-height:1.55}
+.note .k{font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--org)}
+.note .reset{margin-top:16px;padding:10px 16px;border-radius:999px;border:1.5px solid var(--pri);font-weight:700;font-size:13px;color:var(--pri)}
+.gal{padding:28px 32px 70px;max-width:1500px;margin:0 auto}
+.gsec{margin-bottom:44px}.gsec h2{font-size:30px;margin-bottom:4px}.gsec>p{color:var(--mut);margin-bottom:18px;font-size:14px}
+.ggrid{display:flex;flex-wrap:wrap;gap:30px}.gitem{cursor:pointer;width:252px}
+.gscale{width:252px;height:518px}.gscale .phone{transform:scale(.7);transform-origin:top left}
+.gl{margin-top:12px;font-size:13.5px;font-weight:600}.gl b{display:inline-block;background:var(--pri);color:#fff;border-radius:99px;font-size:11px;padding:2px 8px;margin-right:6px}
+.gitem:hover .gl{text-decoration:underline}
+@media(max-width:1100px){.exp{grid-template-columns:1fr}.panel,.note,.stage{position:static;max-height:none}.stage{justify-self:center}}
+
+/* phone */
+.phone{width:360px;height:740px;background:var(--bg);border-radius:44px;box-shadow:0 0 0 8px #17171b,0 30px 60px rgba(40,0,73,.28);overflow:hidden;position:relative;display:flex;flex-direction:column;color:var(--ink)}
+.phone.static{pointer-events:none}.phone.dark{background:var(--pri);color:#fff}
+.status{height:38px;flex:none;display:flex;justify-content:space-between;align-items:center;padding:8px 26px 0;font-size:12.5px;font-weight:700}
+.body{flex:1;overflow-y:auto;padding:8px 20px 24px;scrollbar-width:none}.body::-webkit-scrollbar{display:none}
+.foot{flex:none;padding:12px 20px 16px;background:#fff;box-shadow:0 -10px 26px rgba(40,0,73,.07);border-radius:26px 26px 0 0}
+.nav{flex:none;padding:6px 14px 14px}
+.nav .pill{display:flex;align-items:stretch;background:#fff;border-radius:30px;padding:8px 6px;box-shadow:0 10px 30px rgba(40,0,73,.13)}
+.nav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;color:#8B8997;font-weight:600;font-size:11px}
+.nav .ni{width:58px;height:32px;border-radius:16px;display:flex;align-items:center;justify-content:center}
+.nav button em{font-style:normal;letter-spacing:.01em}
+.nav button.on{color:var(--pri);font-weight:800}.nav button.on .ni{background:var(--pri);color:#fff}
+.ic{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.row{display:flex;align-items:center;gap:8px}.sb{justify-content:space-between}.g12{gap:12px}.col{display:flex;flex-direction:column;gap:10px}
+.mut{color:var(--mut)}.sm{font-size:12.5px}.xs{font-size:11.5px}
+h1.disp{font-size:29px}h2.disp{font-size:24px}h3.disp{font-size:18px}h4{font-size:16px;font-weight:700;letter-spacing:-.01em}
+p{font-size:14px;line-height:1.5}
+.hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;min-height:42px}
+.lg{display:inline-flex;align-items:center;gap:8px;font-weight:800;font-size:19px;letter-spacing:-.03em}
+.tp{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;min-height:40px}.tp b{font-size:16px}
+.ib{width:40px;height:40px;border-radius:50%;background:#fff;box-shadow:var(--sh);display:flex;align-items:center;justify-content:center;position:relative;flex:none}
+.dot{position:absolute;top:8px;right:9px;width:9px;height:9px;border-radius:50%;background:var(--org);border:2px solid #fff}
+.skip{font-weight:700;color:var(--pri);font-size:14px;padding:8px 6px}
+.av{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex:none;background:var(--tint);color:var(--pri)}
+.av.o{background:var(--orgt);color:var(--org)}.av.p{background:var(--pri);color:#fff}.av.l{width:68px;height:68px;font-size:22px}
+.btn{height:54px;border-radius:27px;background:var(--pri);color:#fff;font-weight:700;font-size:15px;width:100%;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn.o{background:var(--org);color:#fff}.btn.g{background:#fff;color:var(--pri);border:1.5px solid var(--pri)}
+.btn.s{height:40px;border-radius:20px;font-size:13px;width:auto;padding:0 16px}
+.lnk{font-weight:700;font-size:14px;color:var(--pri);display:block;text-align:center;margin-top:14px}
+.lnk b{text-decoration:underline;text-underline-offset:3px}
+.steps{display:flex;gap:4px;flex:1;margin:0 14px}.steps i{flex:1;height:5px;border-radius:3px;background:#DADDE6}.steps i.on{background:var(--pri)}
+.chip{padding:10px 16px;border-radius:999px;background:#fff;border:1.5px solid var(--line);font-weight:600;font-size:13.5px;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.chip.on{background:var(--pri);color:#fff;border-color:var(--pri)}.chip.t{background:var(--tint);border-color:transparent;color:var(--pri)}.chip.sm{padding:5px 11px;font-size:11.5px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.lab{font-size:13.5px;font-weight:700;margin:18px 0 8px}
+.opt{border:1.5px solid transparent;background:#fff;box-shadow:var(--sh);border-radius:22px;padding:14px;display:flex;gap:12px;align-items:center;text-align:left;width:100%}
+.opt .ico{width:44px;height:44px;border-radius:14px;background:var(--tint);color:var(--pri);display:flex;align-items:center;justify-content:center;flex:none}
+.opt b{display:block;font-size:15px}.opt small{font-size:12.5px;color:var(--mut)}
+.opt.on{border-color:var(--pri);background:var(--tint)}
+.opt .rd{margin-left:auto;width:22px;height:22px;border-radius:50%;border:2px solid #C5C8D4;flex:none}.opt.on .rd{border-color:var(--pri);background:var(--pri);box-shadow:inset 0 0 0 4px var(--tint)}
+.lang{height:76px;border-radius:22px;background:#fff;box-shadow:var(--sh);border:2px solid transparent;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:1px;padding:10px 14px;position:relative;text-align:left}
+.lang b{font-size:19px;font-weight:800;letter-spacing:-.01em}.lang small{font-size:12px;color:var(--mut);font-weight:500}
+.lang.on{border-color:var(--pri);background:var(--tint)}
+.lang .ck{position:absolute;top:10px;right:10px;width:22px;height:22px;border-radius:50%;background:var(--pri);color:#fff;display:none;align-items:center;justify-content:center}.lang.on .ck{display:flex}.lang .ck .ic{width:13px;height:13px;stroke-width:3}
+.field{background:#fff;border:1.5px solid var(--line);border-radius:18px;padding:11px 16px}
+.field label{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);display:block}
+.field input{border:0;background:none;outline:0;font-weight:700;font-size:16px;width:100%;color:var(--ink);margin-top:2px}
+.field.srch{display:flex;gap:10px;align-items:center;padding:13px 16px;color:var(--mut);font-size:14px}
+.card{background:#fff;border-radius:24px;padding:14px;box-shadow:var(--sh)}
+.card.t{background:var(--tint);box-shadow:none}.card.o{background:var(--orgt);box-shadow:none}
+.bar{height:8px;border-radius:4px;background:#E4E1EC;overflow:hidden}.bar i{display:block;height:100%;background:var(--org);border-radius:4px}
+.sh{display:flex;justify-content:space-between;align-items:baseline;margin:22px 0 12px}.sh h3{font-size:18px}.sh span{font-size:12.5px;font-weight:700;color:var(--pri)}
+.hs{display:flex;gap:12px;overflow-x:auto;margin:0 -20px;padding:2px 20px 6px;scrollbar-width:none}.hs::-webkit-scrollbar{display:none}
+.art svg{display:block;width:100%;height:100%}
+.tb{width:236px;height:300px;border-radius:30px;position:relative;overflow:hidden;flex:none;cursor:pointer;color:#fff;box-shadow:var(--sh)}
+.tb .artf{position:absolute;inset:0}.tb .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,0,40,0) 34%,rgba(20,0,40,.82))}
+.rate{position:absolute;top:12px;left:12px;background:rgba(255,255,255,.92);color:var(--ink);font-size:12px;font-weight:700;padding:5px 10px;border-radius:99px}
+.fav{position:absolute;top:10px;right:12px;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.9);color:var(--pri);display:flex;align-items:center;justify-content:center}
+.tbt{position:absolute;left:16px;right:16px;bottom:16px}.tbt h4{font-size:19px;margin:6px 0 3px;line-height:1.2}.tbt p{font-size:12px;opacity:.9}
+.tbt .pr{font-size:12.5px;margin-top:8px;display:flex;justify-content:space-between;align-items:center}.tbt .pr b{font-size:17px}
+.tbt .rg{background:rgba(255,255,255,.2);border-radius:99px;padding:4px 9px;font-size:10.5px;font-weight:600;backdrop-filter:blur(4px)}
+.tg2{background:var(--org);color:#fff;font-size:10.5px;font-weight:700;padding:3px 10px;border-radius:99px;display:inline-block}
+.tr{background:#fff;border-radius:26px;overflow:hidden;box-shadow:var(--sh);margin-bottom:14px;cursor:pointer}
+.tr .im{height:118px;position:relative}.tr .im .rate{background:rgba(255,255,255,.95)}
+.tr .tb2{padding:12px 14px 14px}.tr h4{margin:8px 0 2px}.tr .price{font-size:18px;font-weight:800}
+.tag{background:var(--tint);color:var(--pri);font-size:10.5px;font-weight:700;padding:4px 10px;border-radius:99px}
+.seat{font-size:11px;font-weight:700;color:var(--org)}
+.th{border-radius:18px;overflow:hidden;flex:none}
+.tl{position:relative;padding-left:22px;margin-top:8px}.tl:before{content:'';position:absolute;left:6px;top:6px;bottom:6px;width:2px;background:#DDD9E8}
+.tl>div{position:relative;margin-bottom:12px}.tl>div:before{content:'';position:absolute;left:-21px;top:4px;width:12px;height:12px;border-radius:50%;background:var(--org);border:2px solid #fff}
+.tl>div.done:before{background:var(--pri)}.tl b{font-size:13.5px;display:block}.tl small{font-size:12px;color:var(--mut)}
+.tabs2{display:flex;background:#E4E7EE;border-radius:999px;padding:4px;margin:14px 0}
+.tabs2 button{flex:1;height:40px;border-radius:999px;font-weight:700;font-size:13.5px;display:flex;align-items:center;justify-content:center;gap:6px;color:var(--mut)}
+.tabs2 button.on{background:var(--pri);color:#fff}.tabs2 button.dis{opacity:.7}
+.scrim{position:absolute;inset:0;background:rgba(21,17,28,.5);z-index:6}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:32px 32px 0 0;padding:12px 20px 24px;z-index:7;max-height:88%;overflow:auto}
+.sheet:before{content:'';display:block;width:44px;height:5px;background:#DADDE6;border-radius:3px;margin:0 auto 14px}
+.li{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1.5px solid #EEF0F5}.li:last-child{border:0}
+.li .ico{width:38px;height:38px;border-radius:12px;background:var(--tint);color:var(--pri);display:flex;align-items:center;justify-content:center;flex:none}
+.li .t{flex:1;font-weight:700;font-size:14.5px}.li .t small{display:block;font-weight:400;color:var(--mut);font-size:12px}
+.badge{min-width:20px;height:20px;border-radius:10px;background:var(--org);color:#fff;font-size:11px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;padding:0 6px}
+.tg{width:48px;height:28px;border-radius:14px;background:#D5D8E2;position:relative;flex:none}.tg:after{content:'';position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.tg.on{background:var(--pri)}.tg.on:after{left:23px}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center;font-size:12.5px;font-weight:700}.cal span{height:34px;display:flex;align-items:center;justify-content:center;border-radius:50%}
+.cal .h{font-size:10.5px;color:var(--mut);height:20px}.cal .r{background:var(--pri);color:#fff}.cal .w{background:var(--tint)}
+.msg{max-width:84%;padding:9px 13px;border-radius:20px 20px 20px 6px;background:#fff;box-shadow:var(--sh);font-size:13.5px;line-height:1.4}
+.msg small{display:block;font-weight:700;font-size:11px;margin-bottom:2px;color:var(--pri)}
+.msg.me{align-self:flex-end;background:var(--pri);color:#fff;border-radius:20px 20px 6px 20px}
+.sysm{align-self:center;font-size:11.5px;color:var(--mut);background:#E4E7EE;padding:4px 12px;border-radius:99px;font-weight:600}
+.photo{width:150px;height:96px;border-radius:14px;margin-top:6px;overflow:hidden}
+.hero{position:relative;border-radius:30px;overflow:hidden}.hero .art{height:160px}.hero .ib{position:absolute;top:12px}
+.stampg{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.stamp{aspect-ratio:1;border-radius:50%;border:2.5px dashed var(--pri);color:var(--pri);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-size:11px;font-weight:800;transform:rotate(-8deg);background:#fff}
+.stamp.lk{opacity:.35;border-style:dotted;background:none;color:var(--mut);border-color:var(--mut)}
+.typec{flex:1;border-radius:22px;background:#fff;box-shadow:var(--sh);padding:16px 6px;display:flex;flex-direction:column;align-items:center;gap:8px;font-weight:700;font-size:13px;border:2px solid transparent}
+.typec .ci{width:46px;height:46px;border-radius:50%;background:var(--tint);color:var(--pri);display:flex;align-items:center;justify-content:center}
+.typec.on{background:var(--pri);color:#fff}.typec.on .ci{background:rgba(255,255,255,.18);color:#fff}
+.sosfab{position:absolute;right:16px;z-index:5;width:56px;height:56px;border-radius:50%;background:var(--org);color:#fff;font-weight:800;font-size:14px;letter-spacing:.02em;border:3px solid #fff;display:flex;align-items:center;justify-content:center;animation:pulse 2.2s infinite;box-shadow:0 8px 20px rgba(248,78,0,.45)}
+@keyframes pulse{0%{box-shadow:0 8px 20px rgba(248,78,0,.45),0 0 0 0 rgba(248,78,0,.4)}100%{box-shadow:0 8px 20px rgba(248,78,0,.45),0 0 0 16px rgba(248,78,0,0)}}
+.sosbig{height:80px;border-radius:30px;background:var(--org);color:#fff;font-size:17px;font-weight:800;width:100%;display:flex;align-items:center;justify-content:center;gap:12px;box-shadow:0 12px 28px rgba(248,78,0,.42);letter-spacing:-.01em}
+.sosbig .ic{width:28px;height:28px;flex:none}
+.mgr{display:flex;align-items:center;gap:10px;background:var(--tint);border-radius:20px;padding:8px 8px 8px 12px;margin-bottom:10px}
+.mgr .call{margin-left:auto;background:var(--org);color:#fff;border-radius:99px;height:36px;padding:0 14px;display:flex;align-items:center;gap:6px;font-weight:700;font-size:13px}
+.hello{font-size:14px;color:var(--mut);margin:0 0 4px;font-weight:500}.hello b{color:var(--ink);font-weight:800}
+.lvp{display:flex;align-items:center;gap:5px;background:var(--orgt);color:var(--org);font-weight:800;font-size:12px;padding:0 12px;height:36px;border-radius:99px}
+.rdot{width:8px;height:8px;border-radius:50%;background:var(--org);display:inline-block;margin-right:4px}
+
+/* ---- v5 additions ---- */
+.phone{cursor:default;-webkit-user-select:none;user-select:none}
+.phone input{cursor:text;-webkit-user-select:text;user-select:text}
+[data-go],[data-back],[data-set],[data-toggle],[data-tog],[data-cyc],[data-tab-go],[data-swap],[data-open],[data-tab],[data-reset],[data-gal],.tg,.chip,.sl,.opt,.lang,.typec,.ib,.btn,.skip,.lnk,.tr,.tb,.scrim,.call,.lvp,.gitem,.garr,.sosfab,.sosbig,.hs .tr{cursor:pointer}
+[data-go] *,[data-back] *,[data-set] *,[data-tog] *,[data-swap] *,[data-tab-go] *,[data-gal] *,button *,.chip *{cursor:inherit}
+a.lnk{cursor:pointer}
+img{-webkit-user-drag:none}
+.art img,.th img,.photo img{display:block;width:100%;height:100%;object-fit:cover}
+.gwrap{position:relative;overflow:hidden}
+.gal2{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch}.gal2::-webkit-scrollbar{display:none}
+.gs{flex:none;width:100%;height:100%;scroll-snap-align:start}.gs img{display:block;width:100%;height:100%;object-fit:cover}
+.gdots{position:absolute;left:0;right:0;bottom:10px;display:flex;justify-content:center;gap:6px;pointer-events:none}
+.gdots i{width:7px;height:7px;border-radius:4px;background:rgba(255,255,255,.65);transition:.2s}
+.gdots i.on{width:22px;background:var(--org)}
+.garr{position:absolute;top:50%;margin-top:-16px;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.88);color:var(--pri);display:flex;align-items:center;justify-content:center;z-index:2;box-shadow:0 2px 8px rgba(40,0,73,.2)}
+.garr.l{left:10px}.garr.r{right:10px}
+.hero .ib{z-index:3}
+.vill{background:var(--tint);border-radius:22px;padding:10px 14px;margin:12px 0}.vill svg{display:block;width:100%;height:auto;max-height:110px}
+.typec.pic{padding:10px 6px 12px}.typec.pic .pil{width:100%}.typec.pic .pil svg{display:block;width:100%;height:auto}
+.typec.pic.on{background:var(--tint);border-color:var(--pri);color:var(--pri)}
+.bdg{width:54px;height:54px;flex:none}.bdg svg{display:block;width:100%;height:100%}
+.bdg.off{filter:grayscale(1);opacity:.45}
+.rv{padding:10px 0;border-bottom:1.5px solid #EEF0F5}.rv:last-child{border:0}
+.rv .st{color:var(--org);letter-spacing:1px;font-size:13px}
+.rbar{display:flex;align-items:center;gap:8px;margin:4px 0}.rbar .bar{flex:1;height:6px}.rbar span{font-size:11.5px;width:30px;white-space:nowrap}
+.pgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px 12px}
+.pstamp{position:relative;aspect-ratio:156/192;filter:drop-shadow(0 4px 10px rgba(40,0,73,.14))}
+.pstamp .pp{position:absolute;inset:0;width:100%;height:100%}
+.pstamp .si{position:absolute;left:8.5%;right:8.5%;top:8%;bottom:7%;display:flex;flex-direction:column;gap:4px}
+.pstamp .sa{flex:1;min-height:0;border-radius:3px;overflow:hidden;background:var(--tint);display:flex;align-items:center;justify-content:center}
+.pstamp .sa svg{display:block;width:88%;height:auto}
+.pstamp .sa.ph{background:#EFE7F7;overflow:visible}
+.pol{position:relative;background:#fff;padding:4px 4px 17px;box-shadow:0 3px 8px rgba(40,0,73,.28);transform:rotate(-3deg);width:68%;margin:0 auto}
+.pol img{display:block;width:100%;aspect-ratio:1;object-fit:cover}
+.pol em{position:absolute;left:0;right:0;bottom:2px;text-align:center;font-style:italic;font-size:8.5px;white-space:nowrap;color:var(--pri);font-weight:600}
+.tape{position:absolute;top:-7px;left:50%;width:34px;height:12px;margin-left:-17px;background:rgba(248,78,0,.6);transform:rotate(3deg)}
+.pstamp .sc{text-align:center;line-height:1.2}.pstamp .sc b{display:block;font-size:13px;color:var(--pri)}.pstamp .sc span{font-size:10px;color:var(--mut)}
+.pstamp .pm{position:absolute;right:2px;top:2px;width:44px;height:44px;transform:rotate(-14deg);opacity:.75;pointer-events:none}
+.pstamp.locked{filter:grayscale(1) opacity(.5) drop-shadow(0 2px 4px rgba(40,0,73,.1))}
+.pstamp .lk{position:absolute;top:14px;right:16px;width:22px;height:22px;color:var(--pri);background:rgba(255,255,255,.9);border-radius:50%;padding:3px;display:flex}
+.pstamp .lk svg{width:100%;height:100%}
+</style>
+</head>
+<body>
+<div class="top-bar">
+  <div class="vlogo">Her Safar<small>App prototype v5</small></div>
+  <div class="tabs"><button class="on" data-tab="exp">App experience</button><button data-tab="gal">All screens</button></div>
+  <div class="swatches"><i style="background:#FFFFFF"></i><i style="background:#280049"></i><i style="background:#F84E00"></i></div>
+</div>
+<div class="view on" id="exp"><div class="exp">
+  <div class="panel" id="list"></div>
+  <div class="stage"><div id="live"></div></div>
+  <div class="note" id="note"></div>
+</div></div>
+<div class="view" id="gal"><div class="gal" id="gallery"></div></div>
+
+<script src="js/illustrations.js"></script>
+<script src="js/data.js"></script>
+<script>
+/* ======== LOGO SLOT: put your logo here ========
+   Option 1: set LOGO_IMG to a path or data-URI of your logo (PNG/SVG).
+   Option 2: replace the placeholder SVG in logoMark(). */
+const LOGO_IMG='assets/svg/hersafar.svg';
+const logoMark=(s,light)=>`<svg width="${s}" height="${s}" viewBox="0 0 32 32"><rect width="32" height="32" rx="10" fill="${light?'#fff':'#280049'}"/><path d="M9 21c0-6 14-4 14-10" stroke="${light?'#280049':'#fff'}" stroke-width="3" stroke-linecap="round" fill="none"/><circle cx="23" cy="9" r="3" fill="#F84E00"/></svg>`;
+const logoH=(h=30,light)=>LOGO_IMG?`<img src="${LOGO_IMG}" alt="Her Safar" draggable="false" style="height:${h}px;display:block">`:`<span class="lg" ${light?'style="color:#fff"':''}>${logoMark(h,light)}Her Safar</span>`;
+
+/* ======== icons ======== */
+const P={
+home:'<path d="M3 11l9-8 9 8v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/>',
+bag:'<rect x="4" y="7" width="16" height="14" rx="3"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/>',
+compass:'<circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/>',
+user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>',
+bell:'<path d="M6 16v-5a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 21h4"/>',
+shield:'<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/>',
+pin:'<path d="M12 21s7-6 7-12a7 7 0 0 0-14 0c0 6 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/>',
+clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+check:'<path d="M5 12l5 5 9-10"/>',x:'<path d="M6 6l12 12M18 6L6 18"/>',
+chev:'<path d="M9 6l6 6-6 6"/>',back:'<path d="M15 6l-6 6 6 6"/>',
+send:'<path d="M4 12l16-8-6 16-3-7z"/>',lock:'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',
+phone:'<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/>',
+star:'<path d="M12 3l2.7 6 6.3.6-4.8 4.2 1.5 6.2-5.7-3.2-5.7 3.2 1.5-6.2L3 9.6 9.3 9z"/>',
+plus:'<path d="M12 5v14M5 12h14"/>',search:'<circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/>',
+filter:'<path d="M4 6h16M7 12h10M10 18h4"/>',users:'<circle cx="9" cy="8" r="3.5"/><path d="M2 20c0-3.5 3-5.5 7-5.5s7 2 7 5.5"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14.5c3 0 5 1.8 5 4.5"/>',
+share:'<circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M8.2 10.8l7.6-3.6M8.2 13.2l7.6 3.6"/>',
+globe:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>',
+heart:'<path d="M12 20s-8-5-8-11a4.5 4.5 0 0 1 8-2.5A4.5 4.5 0 0 1 20 9c0 6-8 11-8 11z"/>',
+bus:'<rect x="4" y="4" width="16" height="13" rx="3"/><path d="M4 11h16M7 20v-3M17 20v-3"/>',
+bed:'<path d="M3 18V7M3 14h18v4M21 14v-3a3 3 0 0 0-3-3h-7v6"/>',
+dots:'<circle cx="5" cy="12" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="19" cy="12" r="1.3"/>',
+chat:'<path d="M4 5h16v11H9l-5 4z"/>',cal:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+file:'<path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/>',card:'<rect x="3" y="6" width="18" height="13" rx="3"/><path d="M3 11h18"/>',
+live:'<circle cx="12" cy="12" r="3"/><path d="M6 6a8 8 0 0 0 0 12M18 6a8 8 0 0 1 0 12"/>',
+temple:'<path d="M12 3l4 5H8z"/><path d="M5 21V11h14v10M9 21v-6h6v6"/>',
+mask:'<circle cx="12" cy="12" r="9"/><circle cx="8.5" cy="10" r="1"/><circle cx="15.5" cy="10" r="1"/><path d="M8 15c2.5 2 5.5 2 8 0"/>',
+fort:'<path d="M4 21V8h3v3h3V8h4v3h3V8h3v13z"/><path d="M10 21v-5a2 2 0 0 1 4 0v5"/>',
+image:'<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.5"/><path d="M3 17l5-4 4 3 3-2 6 4"/>'
+};
+const ic=(n,s)=>`<svg class="ic" viewBox="0 0 24 24"${s?` style="width:${s}px;height:${s}px"`:''}>${P[n]||''}</svg>`;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* ======== scenic art ======== */
+const bt=(n,f)=>[...Array(n)].map((_,i)=>f(i)).join('');
+const ART={
+mandu:`<defs><linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5B2A91"/><stop offset=".55" stop-color="#F0763A"/><stop offset="1" stop-color="#FFD6A0"/></linearGradient></defs><rect width="300" height="200" fill="url(#g1)"/><circle cx="236" cy="96" r="28" fill="#FFE7C2" opacity=".95"/><path d="M0 158l52-26 46 18 64-30 58 24 80-18v74H0z" fill="#3B0A66" opacity=".5"/><g fill="#280049"><rect x="34" y="124" width="170" height="60"/><rect x="34" y="116" width="170" height="10"/><path d="M62 116a18 18 0 0 1 36 0z"/><path d="M118 116a22 22 0 0 1 44 0z"/><path d="M178 116a14 14 0 0 1 28 0z"/></g><g fill="#FFB07A">${bt(5,i=>`<path d="M${48+i*34} 184v-28a9 9 0 0 1 18 0v28z"/>`)}</g><rect y="184" width="300" height="16" fill="#280049" opacity=".9"/>`,
+maheshwar:`<defs><linearGradient id="g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7A3FB5"/><stop offset=".5" stop-color="#FF8A4C"/><stop offset="1" stop-color="#FFE0B8"/></linearGradient></defs><rect width="300" height="200" fill="url(#g2)"/><circle cx="170" cy="104" r="32" fill="#FFF1D0" opacity=".95"/><g fill="#280049"><path d="M30 150V98l16-38 16 38v52z"/><rect x="20" y="148" width="52" height="8"/><path d="M230 150v-34l12-26 12 26v34z"/><rect x="222" y="148" width="40" height="8"/></g><g fill="#4A1B7C"><rect y="156" width="300" height="8"/><rect y="164" width="300" height="8" opacity=".8"/></g><rect y="172" width="300" height="28" fill="#6E3AA6"/><g stroke="#fff" stroke-width="1.5" opacity=".35"><path d="M20 180h50M110 186h70M210 180h60"/></g><path d="M150 184h54l-8 9h-38z" fill="#F84E00"/>`,
+ujjain:`<defs><linearGradient id="g3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#280049"/><stop offset=".6" stop-color="#8A3FA0"/><stop offset="1" stop-color="#FF9A5C"/></linearGradient></defs><rect width="300" height="200" fill="url(#g3)"/><circle cx="150" cy="118" r="48" fill="#FFC38A" opacity=".85"/><g fill="#fff" opacity=".7"><circle cx="40" cy="30" r="1.6"/><circle cx="90" cy="54" r="1.2"/><circle cx="240" cy="36" r="1.6"/><circle cx="270" cy="70" r="1.2"/></g><g fill="#1C0033"><path d="M120 176V122q30-62 60 0v54z"/><rect x="147" y="76" width="6" height="14"/><path d="M153 76V62l16 5z" fill="#F84E00"/><path d="M84 176v-36q14-26 28 0v36z"/><path d="M188 176v-36q14-26 28 0v36z"/><rect x="60" y="176" width="180" height="24"/></g>`,
+kerala:`<defs><linearGradient id="g4" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8ED1D6"/><stop offset="1" stop-color="#F1F7E2"/></linearGradient></defs><rect width="300" height="200" fill="url(#g4)"/><circle cx="70" cy="58" r="20" fill="#FFF3C6"/><path d="M0 122q60-30 120-8t180-14v60H0z" fill="#6DBE8D"/><path d="M0 136q80-26 160-4t140-8v50H0z" fill="#3F9B6E"/><path d="M242 156q-4-40 10-76" stroke="#280049" stroke-width="4" fill="none"/><path d="M252 80q-30-10-44 8q22-8 44-8zM252 80q30-10 44 8q-22-8-44-8zM252 80q-8-26-34-24q22 4 34 24zM252 80q8-26 34-24q-22 4-34 24z" fill="#1F7A52"/><rect y="152" width="300" height="48" fill="#5AB8C4"/><g stroke="#fff" stroke-width="1.5" opacity=".4"><path d="M20 166h40M200 172h60M120 190h50"/></g><path d="M80 172h96l-10 12H92z" fill="#280049"/><path d="M96 172q32-32 64 0z" fill="#F84E00"/>`,
+jaipur:`<defs><linearGradient id="g5" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FF9E6B"/><stop offset="1" stop-color="#FFE7D0"/></linearGradient></defs><rect width="300" height="200" fill="url(#g5)"/><circle cx="62" cy="50" r="18" fill="#FFF6E0"/><path d="M0 132l70-40 60 28 70-48 100 56v72H0z" fill="#B58AD6" opacity=".6"/><g fill="#D9694A"><rect y="150" width="300" height="50"/>${bt(12,i=>`<rect x="${8+i*25}" y="140" width="14" height="10"/>`)}</g><g fill="#C45A3E"><rect x="28" y="98" width="36" height="52"/><path d="M28 98a18 18 0 0 1 36 0z"/><rect x="236" y="98" width="36" height="52"/><path d="M236 98a18 18 0 0 1 36 0z"/></g><path d="M118 200v-36a32 32 0 0 1 64 0v36z" fill="#280049"/>`,
+udaipur:`<defs><linearGradient id="g6" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6E3AA6"/><stop offset=".55" stop-color="#FF9A6B"/><stop offset="1" stop-color="#FFE0BF"/></linearGradient></defs><rect width="300" height="200" fill="url(#g6)"/><circle cx="232" cy="78" r="24" fill="#FFF0D2"/><path d="M0 112l60-26 70 20 60-22 110 28v8H0z" fill="#4A1B7C" opacity=".6"/><rect y="118" width="300" height="82" fill="#7B54B2"/><g fill="#FFF6EE"><rect x="80" y="96" width="140" height="24"/><path d="M96 96a14 14 0 0 1 28 0zM140 96a16 16 0 0 1 32 0zM188 96a12 12 0 0 1 24 0z"/></g><g fill="#FFF6EE" opacity=".25"><rect x="80" y="120" width="140" height="26"/></g><g stroke="#fff" stroke-width="1.5" opacity=".35"><path d="M20 160h60M200 168h70M110 184h80"/></g>`
+};
+
+
+/* ======== state ======== */
+const ST={lang:'en',flow:'new',returning:false,who:'me',rel:'Son',phone:'98270 12345',name:'Sangeeta Verma',age:'45',city:'Indore',stage:'home',c1:'Once or twice',c2:'A little new',c3:'Same-day',freeT:['Weekends','Specific dates'],types:['Spiritual','Heritage'],also:[],budget:'₹2,000 to ₹5,000',food:'Veg',acc:[],part:false,sort:0,q:'',trip:'mahesh',pick:0,veh:0};
+const LANGS=[['en','English','English','Continue'],['hi','हिन्दी','Hindi','आगे बढ़ें'],['mr','मराठी','Marathi','पुढे जा'],['gu','ગુજરાતી','Gujarati','આગળ વધો'],['ta','தமிழ்','Tamil','தொடரவும்'],['te','తెలుగు','Telugu','కొనసాగించండి'],['bn','বাংলা','Bengali','এগিয়ে যান'],['kn','ಕನ್ನಡ','Kannada','ಮುಂದುವರಿಸಿ'],['ml','മലയാളം','Malayalam','തുടരുക'],['pa','ਪੰਜਾਬੀ','Punjabi','ਅੱਗੇ ਵਧੋ']];
+const langName=()=>(LANGS.find(l=>l[0]===ST.lang)||LANGS[0])[1];
+const me=()=>ST.who==='me';
+const W=(a,b)=>me()?a:b;
+const fn=()=>(ST.name||'Sangeeta').trim().split(' ')[0]||'Sangeeta';
+const ini=n=>(n||'S').trim().split(/\s+/).map(x=>x[0]).slice(0,2).join('').toUpperCase();
+const cv=v=>v==='true'?true:v==='false'?false:v;
+
+const T={
+mandu:{k:'mandu',n:'Mandu Day Out',from:'Indore',d:'Sat 21 Nov',d1:'Sat 21 Nov',dur:'1 day',p:1499,pt:'₹1,499',types:['Heritage'],seats:6,reg:'16 Nov',go:'9 Nov',in:15,art:'mandu',r:'4.8',o:1},
+mahesh:{k:'mahesh',n:'Maheshwar and Omkareshwar',from:'Indore',d:'28-29 Nov',d1:'Sat 28 Nov',dur:'2 days',p:3999,pt:'₹3,999',types:['Spiritual','Heritage'],seats:4,reg:'20 Nov',go:'15 Nov',in:22,art:'maheshwar',r:'4.9',o:2},
+ujjain:{k:'ujjain',n:'Ujjain Mahakal Darshan',from:'Indore',d:'Sun 6 Dec',d1:'Sun 6 Dec',dur:'1 day',p:1299,pt:'₹1,299',types:['Spiritual'],seats:9,reg:'30 Nov',go:'20 Nov',in:30,art:'ujjain',r:'4.7',o:3},
+jaipur:{k:'jaipur',n:'Jaipur Heritage Weekend',from:'Jaipur',d:'12-14 Dec',d1:'Sat 12 Dec',dur:'3 days',p:5499,pt:'₹5,499',types:['Heritage','Cultural'],seats:7,reg:'1 Dec',go:'30 Nov',in:36,art:'jaipur',r:'4.8',o:4},
+udaipur:{k:'udaipur',n:'Udaipur Lakes',from:'Udaipur',d:'19-20 Dec',d1:'Sat 19 Dec',dur:'2 days',p:4799,pt:'₹4,799',types:['Cultural','Heritage'],seats:10,reg:'8 Dec',go:'7 Dec',in:43,art:'udaipur',r:'4.9',o:5},
+kerala:{k:'kerala',n:'Kerala Backwaters',from:'Kochi',d:'12-16 Jan',d1:'Tue 12 Jan',dur:'5 days',p:18500,pt:'₹18,500',types:['Cultural'],seats:11,reg:'20 Dec',go:'30 Dec',in:67,art:'kerala',r:'4.8',o:6}
+};
+
+Object.values(T).forEach(t=>{});
+const TRIP_IMG=k=>({maheshwar:'mahesh'}[k]||k);
+const svg=k=>`<img src="${HSD.IMGS[TRIP_IMG(k)||'mahesh'][0]}" alt="" draggable="false">`;
+const thumb=(k,s)=>`<div class="th" style="width:${s}px;height:${s}px">${svg(k)}</div>`;
+const TT=()=>T[ST.trip]||T.mahesh, DD=()=>HSD.D[TT().k];
+const inr=n=>'₹'+Number(n).toLocaleString('en-IN');
+const halfOf=t=>Math.ceil(t.p/2/50)*50;
+const PK=()=>DD().pickups[Number(ST.pick)||0]||DD().pickups[0];
+const indore=()=>TT().from==='Indore';
+const durL=t=>{const n=parseInt(t.dur);return n===1?'1 day':`${n} days, ${n-1} night${n>2?'s':''}`};
+const slides=(imgs,h,r)=>`<div class="gwrap" ${r?`style="border-radius:${r}px"`:''}><div class="gal2" style="height:${h}px">${imgs.map(s=>`<div class="gs"><img src="${s}" alt="" draggable="false"></div>`).join('')}</div>${imgs.length>1?`<button class="garr l" data-gal="-1">${ic('back',16)}</button><button class="garr r" data-gal="1">${ic('chev',16)}</button><div class="gdots">${imgs.map((_,i)=>`<i class="${i?'':'on'}"></i>`).join('')}</div>`:''}</div>`;
+const accRow=(l,tx,sfx)=>`<div class="row" style="padding:6px 0"><span class="av ${l===1?'':'o'}" style="width:22px;height:22px;flex:none">${ic(l===0?'x':'check',12)}</span><span class="sm" style="font-weight:600">${tx}${sfx&&l===0?' (not available)':''}${sfx&&l===2?' (partly)':''}</span></div>`;
+const tcBig=t=>`<div class="tb" data-go="detail" data-trip="${t.k}"><div class="artf art">${svg(t.art)}</div><div class="shade"></div><span class="rate">★ ${t.r}</span><span class="fav">${ic('heart',17)}</span><div class="tbt"><span class="tg2">${t.types[0]}</span><h4>${t.n}</h4><p>${t.from} · ${t.d} · ${t.dur}</p><div class="pr"><span>From <b>${t.pt}</b></span><span class="rg">Register by ${t.reg}</span></div></div></div>`;
+const tcRow=t=>`<div class="tr" data-go="detail" data-trip="${t.k}"><div class="im art">${svg(t.art)}<span class="rate">★ ${t.r}</span></div><div class="tb2"><div class="row sb"><span class="tag">${t.types.join(' · ')}</span><span class="seat">${t.seats} seats left</span></div><h4>${t.n}</h4><p class="mut sm">${t.from} · ${t.d} · ${t.dur}</p><div class="row sb" style="margin-top:8px"><span class="price">${t.pt}</span><span class="xs mut">Register by ${t.reg} · about 3 min</span></div></div></div>`;
+
+/* ======== helpers ======== */
+const steps=n=>`<div class="steps">${[1,2,3,4,5,6,7].map(i=>`<i class="${i<=n?'on':''}"></i>`).join('')}</div>`;
+const skip=to=>`<button class="skip" data-go="${to}">Skip</button>`;
+const topb=(title,n,right)=>`<div class="tp"><button class="ib" data-back>${ic('back')}</button>${n?steps(n):`<b>${title||''}</b>`}${right||'<span style="width:40px"></span>'}</div>`;
+const hdr=()=>`<div class="hd">${logoH(32)}<button class="ib" data-go="notifications">${ic('bell')}<i class="dot"></i></button></div>`;
+const chip=(l,on,set)=>`<button class="chip ${on?'on':''}" data-set="${set}">${l}</button>`;
+const tchip=(l,on,key)=>`<button class="chip ${on?'on':''}" data-tog="${key}|${l}">${l}</button>`;
+const sh=(h,s,go)=>`<div class="sh"><h3 class="disp">${h}</h3>${s?`<span ${go?`data-go="${go}"`:''}>${s}</span>`:''}</div>`;
+const nav=a=>`<div class="nav"><div class="pill">${[['home','Home','@home','home'],['compass','Discover','discover','discover'],['bag','My Trips','trips','trips'],['user','Profile','profile','profile']].map(x=>`<button class="${a===x[3]?'on':''}" data-tab-go="${x[2]}"><span class="ni">${ic(x[0],22)}</span><em>${x[1]}</em></button>`).join('')}</div></div>`;
+const MGR={n:'Pooja Rao',ph:'+91 98270 55512'};
+
+/* ======== screens ======== */
+const S={};
+const add=(id,sec,name,note,o)=>S[id]=Object.assign({id,sec,name,note},o);
+
+add('splash','Onboarding','Splash',`Brand-purple screen with your splash logo, slightly above centre. Auto-continues after a moment, or tap to skip.`,{dark:1,
+body:()=>`<div style="height:100%;display:flex;align-items:center;justify-content:center;padding-bottom:90px;cursor:pointer" data-go="language"><img src="assets/svg/her_safar_splash.svg" alt="Her Safar" style="width:240px;display:block" draggable="false"></div>`});
+
+add('language','Onboarding','Choose language',`Heading stays English. English (left) is pre-selected with Hindi beside it, plus 8 more languages. Only the button text changes to the chosen language (try Bengali, Tamil, Marathi...).`,{
+body:()=>`${topb('')}<h1 class="disp" style="margin-top:6px">Choose your<br>language</h1><p class="mut" style="margin:8px 0 18px">You can change this later in Profile.</p>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">${LANGS.map(l=>`<button class="lang ${ST.lang===l[0]?'on':''}" data-set="lang=${l[0]}"><span class="ck">${ic('check')}</span><b>${l[1]}</b><small>${l[2]}</small></button>`).join('')}</div>`,
+foot:()=>`<button class="btn" data-go="auth">${(LANGS.find(l=>l[0]===ST.lang)||LANGS[0])[3]}</button>`});
+
+const authBody=m=>`<div class="art" style="height:190px;border-radius:30px;overflow:hidden;margin:0 0 20px">${svg('jaipur')}</div>
+<h1 class="disp">${m==='new'?'Ab uski baari.':'Welcome back'}</h1><p class="mut" style="margin:8px 0 20px">${m==='new'?'Trips planned for married women, with women who get it. Short, safe, affordable.':'Sign in with your mobile number to see your trips.'}</p>
+<div class="field"><label>Mobile number</label><div class="row"><b>+91</b><input data-in="phone" value="${esc(ST.phone)}"></div></div>
+<p class="xs mut" style="margin-top:10px">We'll send a 4-digit code.</p>`;
+add('auth','Onboarding','Create account (phone)',`New users start here. The sign in option sits right under the button, as asked.`,{
+body:()=>authBody('new'),
+foot:()=>`<button class="btn" data-set="flow=new" data-go="otp">Send OTP</button><a class="lnk" data-set="flow=signin" data-go="signin">Already have an account? <b>Sign in</b></a>`});
+add('signin','Onboarding','Sign in (phone)',`Returning users sign in with the same phone + OTP and land on Home. A link back to create account sits underneath.`,{
+body:()=>authBody('signin'),
+foot:()=>`<button class="btn" data-set="flow=signin" data-go="otp">Send OTP</button><a class="lnk" data-set="flow=new" data-go="auth">New here? <b>Create account</b></a>`});
+
+add('otp','Onboarding','Verify OTP',`Prototype bypass: one common code, 1234, for everyone. New users continue to onboarding, signed-in users go straight to Home.`,{
+body:()=>`${topb('')}<h1 class="disp">Enter the code</h1><p class="mut" style="margin:8px 0 22px">Sent to +91 ${esc(ST.phone)}</p>
+<div class="row g12" style="justify-content:space-between">${['1','2','3','4'].map(d=>`<div class="field" style="width:70px;height:74px;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:800;padding:0">${d}</div>`).join('')}</div>
+<div class="card t" style="margin-top:18px;box-shadow:none"><p class="sm"><b>Demo mode:</b> the code is always 1234.</p></div><p class="sm mut" style="margin-top:16px">Resend in 0:24</p>`,
+foot:()=>ST.flow==='signin'?`<button class="btn" data-set="returning=true" data-go="@home">Verify and sign in</button>`:`<button class="btn" data-set="returning=false" data-go="who">Verify</button>`});
+
+add('who','Onboarding','Who is this account for',`Choosing "It's for me" hides the relation chips. Choosing "I'm booking for her" shows "I am her..." with Son, Daughter, Husband, Other. This choice changes the wording of every next screen (you / her).`,{
+body:()=>`${topb('',1)}<h1 class="disp">Who is this<br>account for?</h1><p class="mut" style="margin:8px 0 18px">This helps us talk to the right person.</p>
+<div class="col"><button class="opt ${me()?'on':''}" data-set="who=me"><span class="ico">${ic('user')}</span><div><b>It's for me</b><small>I'm the one travelling</small></div><span class="rd"></span></button>
+<button class="opt ${!me()?'on':''}" data-set="who=her"><span class="ico">${ic('heart')}</span><div><b>I'm booking for her</b><small>My mom, wife or someone special</small></div><span class="rd"></span></button></div>
+${!me()?`<p class="lab">I am her...</p><div class="chips">${['Son','Daughter','Husband','Other'].map(r=>chip(r,ST.rel===r,'rel='+r)).join('')}</div>`:''}`,
+foot:()=>`<button class="btn" data-go="about">Continue</button>`});
+
+add('about','Onboarding','About you / her',`Title and labels switch with the previous answer: "Tell us about yourself" or "Tell us about her". City is a quick pick plus location.`,{
+body:()=>`${topb('',2)}<h1 class="disp">${W('Tell us about<br>yourself','Tell us about<br>her')}</h1><p class="mut" style="margin:8px 0 18px">${W('Just the basics.','Fill in her details.')}</p>
+<div class="col"><div class="field"><label>Full name</label><input data-in="name" value="${esc(ST.name)}"></div><div class="field"><label>Age</label><input data-in="age" value="${esc(ST.age)}"></div></div>
+<p class="lab">City</p><div class="chips">${['Indore','Bhopal','Mumbai','Delhi','Pune','Jaipur','Ahmedabad','Other'].map(c=>chip(c,ST.city===c,'city='+c)).join('')}</div>
+<button class="chip t" style="margin-top:14px">${ic('pin',16)} Use my current location</button>`,
+foot:()=>`<button class="btn" data-go="stage">Continue</button>`});
+
+add('stage','Onboarding','Life stage',`Wording follows the who-is-this-for answer. Skip is available because this is optional.`,{
+body:()=>`${topb('',3,skip('confidence'))}<h1 class="disp">What does a usual<br>week look like<br>for ${W('you','her')}?</h1><div class="col" style="margin-top:20px">
+${[['work','clock','Work and home','Job, deadlines, limited leaves'],['home','home','Mostly home','Family, household, free in pockets'],['settled','heart','Children are settled','More time, ready for something new'],['biz','bag','Run a business','Own shop or work, flexible time']].map(s=>`<button class="opt ${ST.stage===s[0]?'on':''}" data-set="stage=${s[0]}"><span class="ico">${ic(s[1])}</span><div><b>${s[2]}</b><small>${s[3]}</small></div><span class="rd"></span></button>`).join('')}</div>`,
+foot:()=>`<button class="btn" data-go="confidence">Continue</button>`});
+
+add('confidence','Onboarding','Travel comfort',`Heading reads "Your travels so far" or "Her travels so far". Indirect questions set the starting level. Skippable.`,{
+body:()=>`${topb('',4,skip('free'))}<h1 class="disp">${W('Your','Her')} travels<br>so far</h1><p class="mut" style="margin:8px 0 12px">No right answers. It just helps us pick better trips.</p>
+<p class="lab">${W('Have you','Has she')} travelled without family?</p><div class="chips">${['Never','Once or twice','Often'].map(x=>chip(x,ST.c1===x,'c1='+x)).join('')}</div>
+<p class="lab">Meeting other women on a trip feels...</p><div class="chips">${['Exciting','A little new','I would like to know more first'].map(x=>chip(x,ST.c2===x,'c2='+x)).join('')}</div>
+<p class="lab">What trip length feels right for ${W('you','her')}?</p><div class="chips">${['Same-day','2-3 days','A week'].map(x=>chip(x,ST.c3===x,'c3='+x)).join('')}</div>`,
+foot:()=>`<button class="btn" data-go="free">Continue</button>`});
+
+add('free','Onboarding','Free days',`Skip added at the top. Pick weekends or a date range so Home can say "fits your free days".`,{
+body:()=>{let c=['S','M','T','W','T','F','S'].map(x=>`<span class="h">${x}</span>`).join('');for(let d=1;d<=30;d++){const wk=(d-1)%7;c+=`<span class="${d===28||d===29?'r':wk===0||wk===6?'w':''}">${d}</span>`}
+return `${topb('',5,skip('taste'))}<h1 class="disp">When ${W('are you','is she')}<br>free?</h1><p class="mut" style="margin:8px 0 14px">Pick dates or weekends. We'll show trips that fit.</p>
+<div class="chips">${['Weekends','Weekdays','Specific dates'].map(x=>tchip(x,ST.freeT.includes(x),'freeT')).join('')}</div>
+<div class="card" style="margin-top:14px"><div class="row sb" style="margin-bottom:8px"><b>November 2026</b><span class="chip sm t">28 to 29 Nov</span></div><div class="cal">${c}</div></div>
+<div class="row sb card" style="margin-top:12px"><div><b>Leave days ${W('you','she')} can take</b><p class="xs mut">Optional</p></div><div class="row g12"><span class="ib">-</span><b>1</b><span class="ib">+</span></div></div>`},
+foot:()=>`<button class="btn" data-go="taste">Continue</button>`});
+
+add('taste','Onboarding','Trip type and budget',`Three main trip types shown as illustrated cards: Spiritual, Cultural, Heritage, plus optional extras. Whatever is picked here is auto-selected in Discover. Skippable.`,{
+body:()=>`${topb('',6,skip('foodacc'))}<h1 class="disp">What sounds like<br>${W('your','her')} kind of trip?</h1>
+<div class="row g12" style="margin-top:18px">${[['Spiritual',ILLUS.spiritual],['Cultural',ILLUS.cultural],['Heritage',ILLUS.heritage]].map(x=>`<button class="typec pic ${ST.types.includes(x[0])?'on':''}" data-tog="types|${x[0]}"><span class="pil">${x[1]()}</span>${x[0]}</button>`).join('')}</div>
+<p class="lab">Also interested in</p><div class="chips">${['Nature','Beaches','Wellness','Shopping'].map(x=>tchip(x,ST.also.includes(x),'also')).join('')}</div>
+<p class="lab">Comfortable budget per trip</p><div class="chips">${['Under ₹2,000','₹2,000 to ₹5,000','₹5,000 to ₹15,000','₹15,000+'].map(x=>chip(x,ST.budget===x,'budget='+x)).join('')}</div>`,
+foot:()=>`<button class="btn" data-go="foodacc">Continue</button>`});
+
+add('foodacc','Onboarding','Food and accessibility',`New: food preference is collected once here, so it is never asked again while joining. Accessibility needs are collected here too, and trips show what they offer. Skippable.`,{
+body:()=>`${topb('',7,skip('trust'))}<h1 class="disp">Food and<br>comfort</h1><p class="mut" style="margin:8px 0 6px">So every trip works for ${W('you','her')}.</p>
+<p class="lab">Food preference</p><div class="chips">${['Veg','Jain','Non-veg'].map(x=>chip(x,ST.food===x,'food='+x)).join('')}</div>
+<p class="lab">Does ${W('you','she')} need any assistance while travelling?</p><div class="chips">${['Wheelchair access','Walking support','Hearing support','Vision support','Other'].map(x=>tchip(x,ST.acc.includes(x),'acc')).join('')}</div>
+<div class="card t row g12" style="margin-top:18px;box-shadow:none">${ic('shield',22)}<p class="sm">We'll mark which trips have ramps, step-free access and assistance, so you can see it before you join.</p></div>`,
+foot:()=>`<button class="btn" data-go="trust">Continue</button>`});
+
+add('trust','Onboarding','Family and permissions',`Kept as is. Family contact gets the itinerary and live check-ins, never the chats.`,{
+body:()=>`${topb('')}<h1 class="disp">Keep family<br>in the loop</h1><p class="mut" style="margin:8px 0 14px">They get ${W('your','her')} itinerary and live check-ins, never ${W('your','her')} chats.</p>
+<div class="col"><div class="field"><label>Family contact name</label><input value="Rohit Verma (husband)"></div><div class="field"><label>Their number</label><input value="+91 98931 22110"></div></div>
+<div style="margin-top:14px">${[['pin','Location','To show trips near '+W('you','her')],['bell','Notifications','Reminders and group messages'],['chat','WhatsApp updates','Trip info on WhatsApp too']].map(x=>`<div class="li"><span class="ico">${ic(x[0],18)}</span><div class="t">${x[1]}<small>${x[2]}</small></div><span class="tg on"></span></div>`).join('')}</div>`,
+foot:()=>`<button class="btn o" data-set="returning=false" data-go="home">Start exploring</button>`});
+
+/* ---- home ---- */
+const hdrHome=()=>`<div class="hd">${logoH(32)}<div class="row"><button class="lvp" data-go="passport">${ic('star',14)} 1 stamp</button><button class="ib" data-go="notifications">${ic('bell')}<i class="dot"></i></button></div></div><p class="hello">${me()?'Namaste,':'Booking for'} <b>${esc(fn())}</b></p>`;
+const homeCommon=()=>`${sh('Start small, go far','See all','discover')}<div class="hs">${tcBig(T.mandu)}${tcBig(T.ujjain)}${tcBig(T.udaipur)}</div>
+${sh('Fits your free days','See all','discover')}<div class="hs">${tcBig(T.mahesh)}${tcBig(T.jaipur)}</div>
+${sh('Popular right now','See all','discover')}<div class="hs">${tcBig(T.kerala)}${tcBig(T.jaipur)}</div>`;
+add('home','Home & browse','Home (no live trip)',`Slimmed down: one-line greeting, no search bar, no filters, no level card. Cards start right under the heading. "See all" opens Discover, which is where searching and filtering live. Her passport is a small "1 stamp" pill next to the bell.`,{nav:'home',
+body:()=>`${hdrHome()}<div style="margin-top:-6px">${homeCommon()}</div>`});
+add('homeLive','Home & browse','Home (trip is live)',`The live card sits at the very top and the whole card opens the live trip page. Everything else is the same as the normal Home.`,{nav:'home',
+body:()=>`${hdrHome()}<div class="card o" data-go="live" style="margin:6px 0 4px;cursor:pointer"><div class="row sb"><span class="chip sm on" style="background:var(--org);border-color:var(--org)"><span class="rdot" style="background:#fff"></span>LIVE · Day 2 of 3</span><span class="xs" style="font-weight:700">Jaipur Heritage Weekend</span></div><h3 class="disp" style="margin:12px 0 4px;font-size:22px">Amber Fort at 8:30</h3><p class="sm">Next stop in 40 min · Meet at: main gate</p><div class="row" style="margin-top:14px"><button class="btn s" data-go="live">Today's plan</button><button class="btn s g" data-go="chat">${ic('chat',16)} Group <span class="badge">3</span></button></div></div>${homeCommon()}`});
+
+const discList=()=>{const sorts=['Soonest','Price: low to high','Price: high to low'];const q=(ST.q||'').trim().toLowerCase();
+let l=Object.values(T).filter(t=>(!ST.types.length||t.types.some(x=>ST.types.includes(x)))&&(!q||(t.n+' '+t.types.join(' ')).toLowerCase().includes(q)));
+l.sort((a,b)=>ST.sort===0?a.o-b.o:ST.sort===1?a.p-b.p:b.p-a.p);
+return `<div class="row sb" style="margin:12px 0"><p class="sm mut">${l.length} trips match</p><button class="sm" style="font-weight:700;color:var(--pri)" data-cyc="sort|3">Sort: ${sorts[ST.sort]} ▾</button></div>${l.map(tcRow).join('')||'<p class="mut">No trips found. Try another word or type.</p>'}`};
+add('discover','Home & browse','Discover',`Search is a normal text box right here: type a place and the list below filters instantly, with no separate search page. The placeholder is one line. Type chips start from the onboarding choices and can be changed; sort works.`,{nav:'discover',
+body:()=>`${hdr()}<h2 class="disp" style="margin:10px 0 14px">Discover trips</h2><div class="row"><div class="field srch" style="flex:1;min-width:0">${ic('search',18)}<input data-in="q" placeholder="Where to? Jaipur, Mandu" value="${esc(ST.q)}" style="border:0;outline:0;background:none;font:inherit;font-size:14px;font-weight:500;margin:0;width:100%;min-width:0;text-overflow:ellipsis;white-space:nowrap"></div><button class="ib" style="width:50px;height:50px;border-radius:18px;background:var(--pri);color:#fff">${ic('filter')}</button></div>
+<div class="row" style="margin-top:14px">${['Spiritual','Cultural','Heritage'].map(x=>`<button class="chip ${ST.types.includes(x)?'on':''}" data-tog="types|${x}" style="flex:1;justify-content:center;padding:10px 6px">${x}</button>`).join('')}</div>
+<div class="hs" style="margin-top:2px"><span class="chip t">${ic('cal',15)} Nov to Dec</span><span class="chip t">${ST.budget}</span><span class="chip t">Duration</span></div>
+<div id="dlist">${discList()}</div>`});
+
+add('trips','Home & browse','My Trips',`Fixed order by trip date: Live, then Upcoming (soonest first), then Past. Unread badge and one-tap Open group on each card. Chat recency lives in Notifications, so old trips never jump to the top.`,{nav:'trips',
+body:()=>`${hdr()}<div class="row sb" style="margin:10px 0 12px"><h2 class="disp">My Trips</h2><span class="sm" style="font-weight:700;color:var(--pri)">Sort: Date ▾</span></div>
+<div class="hs"><span class="chip on">All</span><span class="chip">Live</span><span class="chip">Upcoming</span><span class="chip">Past</span></div>
+<div class="card t row g12" style="margin:12px 0;box-shadow:none" data-go="pickup" data-trip="mahesh"><span class="av o">${ic('pin',18)}</span><div style="flex:1"><b class="sm">Needs your action</b><p class="xs">Choose a pickup point for Maheshwar</p></div>${ic('chev',18)}</div>
+${sh('Live now')}<div class="card o" data-go="live" style="cursor:pointer"><div class="row sb"><span class="chip sm on" style="background:var(--org);border-color:var(--org)"><span class="rdot" style="background:#fff"></span>LIVE · Day 2 of 3</span><button class="ib" data-go="chat" style="background:#fff">${ic('chat',18)}<span class="badge" style="position:absolute;top:-6px;right:-6px">3</span></button></div><h4 style="margin-top:10px">Jaipur Heritage Weekend</h4><p class="sm mut">Group: Jaipur Heritage Dec '26 · 11 women</p></div>
+${sh('Upcoming')}<div class="col"><div class="card" data-go="hubUp" data-trip="mahesh"><div class="row g12">${thumb('maheshwar',64)}<div style="flex:1"><h4>Maheshwar and Omkareshwar</h4><p class="sm mut">28-29 Nov · in 22 days</p><p class="xs" style="margin-top:3px;font-weight:700;color:var(--org)">Group opens 15 Nov</p></div></div></div>
+<div class="card" data-go="hubOpen" data-trip="ujjain"><div class="row g12">${thumb('ujjain',64)}<div style="flex:1"><h4>Ujjain Mahakal Darshan</h4><p class="sm mut">Sun 6 Dec · in 30 days</p><p class="xs" style="margin-top:3px;font-weight:700;color:var(--pri)">Group is open · 2 new</p></div><button class="ib" data-go="hubOpen" data-trip="ujjain">${ic('chat',18)}</button></div></div></div>
+${sh('Past')}<div class="card"><div class="row g12"><div class="th" style="width:64px;height:64px"><img src="${HSD.ALBUM.imgs[0]}" alt="" draggable="false"></div><div style="flex:1" data-go="post"><h4>Udaipur Lakes</h4><p class="sm mut">10-12 Oct · Udaipur Udaan · 9 women</p></div><div class="col" style="align-items:center;gap:8px"><button class="ib" data-go="chat">${ic('chat',18)}<span class="badge" style="position:absolute;top:-6px;right:-6px">12</span></button><button class="ib">${ic('dots',18)}</button></div></div></div>`});
+
+add('notifications','Home & browse','Notifications',`All group messages across trips, sorted by latest activity. Opened from the bell on any main screen.`,{
+body:()=>`${topb('Notifications')}<div class="tabs2" style="margin-top:0"><button class="on">All</button><button>Groups</button><button>Alerts</button></div>
+${[['chat','Jaipur Heritage Dec \'26','Pooja (trip manager): Reporting 7:30 am at the lobby','2 min','3'],['chat','Ujjain Mahakal Darshan','Meena: Hello everyone, excited!','1 h','2'],['pin','Maheshwar trip','Choose your pickup point before 20 Nov','Yesterday',''],['card','Payment received','₹3,999 · Maheshwar and Omkareshwar','2 days',''],['star','Your passport','One more trip for your next stamp','4 days','']].map(n=>`<div class="li" data-go="${n[0]==='chat'?'chat':'trips'}"><span class="ico">${ic(n[0],18)}</span><div class="t">${n[1]}<small>${n[2]}</small></div><div class="col" style="align-items:flex-end;gap:4px"><span class="xs mut">${n[3]}</span>${n[4]?`<span class="badge">${n[4]}</span>`:''}</div></div>`).join('')}`});
+
+/* ---- trip & join ---- */
+const heroDet=(k,h)=>`<div class="hero">${slides(HSD.IMGS[TRIP_IMG(k)||'mahesh'],h||170)}<button class="ib" data-back style="left:12px">${ic('back')}</button><button class="ib" style="right:12px">${ic('share')}</button></div>`;
+const detBody=tab=>{const t=TT(),D=DD();return `${heroDet(t.k)}<div class="row sb" style="margin-top:16px"><span class="tag">${t.types.join(' · ')}</span><span class="seat">${t.seats} seats left</span></div><h2 class="disp" style="margin:8px 0 4px;font-size:23px">${t.n}</h2><p class="mut sm">${t.from} · ${t.d} · ${durL(t)}</p>
+<div class="chips" style="margin-top:10px">${D.chips.map(x=>`<span class="chip sm t">${ic('shield',13)}${x}</span>`).join('')}</div>
+<div class="tabs2"><button class="${tab==='i'?'on':''}" data-swap="detail">Itinerary</button><button class="${tab==='g'?'on':'dis'}" data-swap="groupLocked">${ic('lock',14)} Group</button></div>`};
+const joinFoot=()=>{const t=TT();return `<div class="row sb"><div><span style="font-size:22px;font-weight:800">${t.pt}</span><p class="xs mut">Register by ${t.reg} · about 3 min</p></div><button class="btn o" style="width:auto;padding:0 22px;white-space:nowrap;flex:none" data-go="pickup">Join the journey</button></div>`};
+add('detail','Trip & join','Trip details',`Every card opens its own page: photos you can swipe, its own itinerary, tips, food and accessibility, its own vehicles and its own stay. Tap a vehicle or the stay row to open a separate sheet. Group tab is visible but locked.`,{
+body:()=>{const D=DD();return `${detBody('i')}<p class="sm" style="margin-bottom:2px">${D.about}</p><p class="xs mut" style="display:flex;gap:6px;align-items:center;margin:8px 0 12px">${ic('pin',14)}${D.dist}</p><div class="tl">${D.itin.map(i=>`<div><b>${i[0]}</b><small>${i[1]}</small></div>`).join('')}</div>
+${sh('Good to know')}<div class="card">${D.tips.map(x=>`<div class="row" style="align-items:flex-start;padding:5px 0"><span style="color:var(--org);margin-top:1px;flex:none">${ic('check',16)}</span><span class="sm">${x}</span></div>`).join('')}</div>
+${sh('Food and accessibility')}<div class="card"><p class="xs mut" style="font-weight:700;letter-spacing:.08em">FOOD</p><div class="chips" style="margin:8px 0 12px">${D.food.map(x=>`<span class="chip sm t">${x}</span>`).join('')}</div>
+<p class="xs mut" style="font-weight:700;letter-spacing:.08em">ACCESSIBILITY</p>${D.access.map(a=>accRow(a[1]?1:0,a[0],1)).join('')}</div>
+<div class="col" style="margin-top:14px">${D.vehicles.map((v,i)=>`<div class="li card" style="padding:12px" data-go="facility" data-veh="${i}"><span class="ico">${ic('bus',18)}</span><div class="t">${v.name}<small>${v.seats} · ${v.ac}</small></div>${ic('chev',18)}</div>`).join('')}<div class="li card" style="padding:12px" data-go="stay"><span class="ico">${ic('bed',18)}</span><div class="t">${D.stay.name}<small>${D.stay.sub}</small></div>${ic('chev',18)}</div></div>`},
+foot:joinFoot});
+
+add('facility','Trip & join','Vehicle sheet',`Opens from a vehicle row. Each trip has its own vehicles, with driver, route, features, what the fare includes and an accessibility check.`,{base:'detail',
+sheet:()=>{const D=DD(),v=D.vehicles[Number(ST.veh)||0]||D.vehicles[0];return `<div class="row sb"><h3 class="disp">${v.name}</h3><button class="ib" data-back>${ic('x',18)}</button></div><div class="vill">${ILLUS.vehicles[v.type]()}</div>
+<p class="sm mut">${v.seats} · ${v.ac} · ${v.luggage}</p>
+<div class="card t row g12" style="margin:12px 0;box-shadow:none"><span class="av p">${ini(v.driver)}</span><div style="flex:1"><b class="sm">${v.driver}</b><p class="xs mut">${v.route}</p></div><span class="chip sm on">★ ${v.rating}</span></div>
+${v.features.map(x=>`<div class="row" style="padding:5px 0">${ic('check',18)}<span class="sm" style="font-weight:600">${x}</span></div>`).join('')}
+<p class="xs mut" style="font-weight:800;letter-spacing:.1em;margin-top:14px">INCLUDED IN THE FARE</p>${D.incl.map(x=>`<div class="row" style="padding:5px 0">${ic('check',18)}<span class="sm" style="font-weight:600">${x}</span></div>`).join('')}
+<p class="xs mut" style="font-weight:800;letter-spacing:.1em;margin-top:12px">NOT INCLUDED</p>${D.notIncl.map(x=>`<div class="row" style="padding:5px 0;opacity:.8">${ic('x',18)}<span class="sm">${x}</span></div>`).join('')}
+<p class="xs mut" style="font-weight:800;letter-spacing:.1em;margin-top:12px">ACCESSIBILITY</p>${v.access.map(a=>accRow(a[0],a[1])).join('')}`}});
+
+add('stay','Trip & join','Stay sheet',`Separate from the vehicle sheet. Swipeable photos, star rating with a breakdown, what is included and not included, accessibility, and reviews from earlier travellers.`,{base:'detail',
+sheet:()=>{const s=DD().stay,r=s.rating,tot=r.dist.reduce((a,b)=>a+b,0)||1;return `<div class="row sb"><h3 class="disp" style="font-size:21px">${s.name}</h3><button class="ib" data-back>${ic('x',18)}</button></div><p class="sm mut" style="margin:2px 0 12px">${s.kind}</p>
+${slides(s.photos,150,20)}
+<div class="row g12" style="margin:16px 0 6px;align-items:center"><div style="font-size:36px;font-weight:800;letter-spacing:-.03em">${r.avg}</div><div style="flex:1"><div style="color:var(--org);letter-spacing:2px;font-size:15px">★★★★★</div><p class="xs mut">${r.count} reviews</p></div></div>
+${r.dist.map((c,i)=>`<div class="rbar"><span>${5-i} ★</span><div class="bar"><i style="width:${c/tot*100}%"></i></div><span class="mut" style="text-align:right">${c}</span></div>`).join('')}
+<p class="sm" style="margin:14px 0 8px">${s.note}</p>
+<div class="card t" style="box-shadow:none"><div class="row sb"><span class="xs mut">TIMINGS</span><b class="xs">${s.times}</b></div><div class="row sb" style="margin-top:6px"><span class="xs mut">MEALS</span><b class="xs">${s.meals}</b></div></div>
+<p class="xs mut" style="font-weight:800;letter-spacing:.1em;margin-top:14px">INCLUDED</p>${s.incl.map(x=>`<div class="row" style="padding:5px 0">${ic('check',18)}<span class="sm" style="font-weight:600">${x}</span></div>`).join('')}
+<p class="xs mut" style="font-weight:800;letter-spacing:.1em;margin-top:12px">NOT INCLUDED</p>${s.notIncl.map(x=>`<div class="row" style="padding:5px 0;opacity:.8">${ic('x',18)}<span class="sm">${x}</span></div>`).join('')}
+<p class="xs mut" style="font-weight:800;letter-spacing:.1em;margin-top:12px">ACCESSIBILITY</p>${s.access.map(a=>accRow(a[0],a[1])).join('')}
+<p class="xs mut" style="font-weight:800;letter-spacing:.1em;margin-top:14px">REVIEWS</p>${s.reviews.map(x=>`<div class="rv"><div class="row sb"><b class="sm">${x[0]} <span class="mut" style="font-weight:500">· ${x[1]}</span></b><span class="st">${'★'.repeat(x[2])}${'☆'.repeat(5-x[2])}</span></div><p class="sm" style="margin-top:3px">${x[3]}</p></div>`).join('')}`}});
+
+add('groupLocked','Trip & join','Group tab (locked)',`Visible but locked before joining, with social proof. It opens 10-15 days before departure.`,{
+body:()=>`${detBody('g')}<div class="card t" style="text-align:center;padding:26px 18px;box-shadow:none"><div class="av l" style="margin:0 auto 12px;background:#fff">${ic('lock',26)}</div><h3 class="disp">Meet your group</h3><p class="sm" style="margin:8px 0 14px">Once you join, we open a group 10 to 15 days before the trip. Chat, see who's coming and share photos.</p><div class="row" style="justify-content:center">${['MJ','KR','AD','FN'].map((x,i)=>`<span class="av ${['','o','p',''][i]}">${x}</span>`).join('')}<span class="xs" style="font-weight:700">+5 joined</span></div></div>`,
+foot:joinFoot});
+
+const jsteps=n=>`<div class="row" style="margin-bottom:16px">${['Pickup','Details','Pay'].map((x,i)=>`<span class="chip sm ${i+1===n?'on':i+1<n?'t':''}">${i+1} ${x}</span>`).join('')}</div>`;
+add('pickup','Trip & join','Join 1: pickup point',`Pickup points belong to the trip: Indore trips list Indore points, Jaipur, Udaipur and Kerala list airport and station points. Tap to choose.`,{
+body:()=>{const D=DD(),ind=indore();return `${topb('Join the journey')}${jsteps(1)}<h2 class="disp">Where should we<br>${ind?'pick':'meet'} ${W('you','her')}${ind?' up?':'?'}</h2><p class="mut sm" style="margin:8px 0 14px">${ind?'Reporting time is 15 minutes before departure.':'We meet you on arrival. Share your flight or train time after joining.'}</p>
+<div class="col">${D.pickups.map((p,i)=>`<button class="opt ${(Number(ST.pick)||0)===i?'on':''}" data-set="pick=${i}"><span class="ico">${ic('pin',18)}</span><div><b>${p[0]}</b><small>${ind?'Report by':'Pickup around'} ${p[1]}</small></div><span class="rd"></span></button>`).join('')}</div>
+<div class="card t row g12" style="margin-top:14px;box-shadow:none">${ic('clock',20)}<p class="sm">Only one pickup? You'll see it here as a fixed point with the time.</p></div>`},
+foot:()=>`<button class="btn" data-go="details">Continue</button>`});
+
+add('details','Trip & join','Join 2: confirm details',`No "who is travelling" question any more. Name, phone, food preference and emergency contact are auto-filled from onboarding. If someone is booking for her, it says so.`,{
+body:()=>`${topb('Join the journey')}${jsteps(2)}<h2 class="disp">Confirm details</h2><p class="mut sm" style="margin:8px 0 14px">Taken from ${W('your','her')} profile. Nothing to type.</p>
+<div class="card"><div class="row g12" style="padding-bottom:12px;border-bottom:1.5px solid #EEF0F5"><span class="av p">${ini(ST.name)}</span><div style="flex:1"><b>${esc(ST.name)}</b><p class="xs mut">Traveller</p></div><span class="chip sm t">Edit</span></div>
+${[['Phone','+91 '+ST.phone],['Food',ST.food],['Assistance',ST.acc.length?ST.acc.join(', '):'None needed'],['Emergency contact','Rohit Verma · 98931 22110']].map(r=>`<div class="row sb" style="padding:11px 0;border-bottom:1.5px solid #EEF0F5"><span class="sm mut">${r[0]}</span><b class="sm" style="text-align:right">${esc(r[1])}</b></div>`).join('')}</div>
+${!me()?`<div class="card t" style="margin-top:12px;box-shadow:none"><p class="sm">Booked by you (${ST.rel}) for ${esc(fn())}. Trip updates go to her number too.</p></div>`:''}
+<div class="field" style="margin-top:12px"><label>Anything we should know (optional)</label><input placeholder="Health, medicines, mobility"></div>
+<div class="card row sb" style="margin-top:12px"><div class="row g12">${ic('share',20)}<div><b class="sm">Send plan to family</b><p class="xs mut">Shareable trip page</p></div></div><span class="tg on"></span></div>`,
+foot:()=>`<button class="btn" data-go="pay">Continue to payment</button>`});
+
+add('pay','Trip & join','Join 3: payment',`Pay in 2 parts changes the amount. Payment is simulated in this prototype; UPI first.`,{
+body:()=>{const t=TT(),h=halfOf(t);return `${topb('Join the journey')}${jsteps(3)}<div class="card"><div class="row sb"><span class="sm">Trip fare</span><b>${t.pt}</b></div><div class="row sb" style="margin-top:6px"><span class="sm">Taxes and fees</span><b>₹0</b></div><div class="row sb" style="margin-top:10px;padding-top:10px;border-top:1.5px solid #EEF0F5"><b>Pay now</b><span style="font-size:20px;font-weight:800">${inr(ST.part?h:t.p)}</span></div>${ST.part?`<p class="xs mut" style="margin-top:4px">Remaining ${inr(t.p-h)} due by ${t.reg}</p>`:''}</div>
+<div class="card t row sb" style="margin:12px 0;box-shadow:none"><div><b class="sm">Pay in 2 parts</b><p class="xs mut">${inr(h)} now, rest by ${t.reg}</p></div><span class="tg ${ST.part?'on':''}" data-toggle="part"></span></div>
+<div class="col">${[['UPI','GPay, PhonePe, Paytm',1],['Card','Debit or credit'],['Net banking','All major banks']].map(m=>`<button class="opt ${m[2]?'on':''}" style="padding:12px 14px"><span class="ico">${ic('card',18)}</span><div><b>${m[0]}</b><small>${m[1]}</small></div><span class="rd"></span></button>`).join('')}</div>
+<p class="xs mut" style="margin-top:12px">Free cancellation until 7 days before departure.</p>`},
+foot:()=>{const t=TT();return `<button class="btn o" data-go="done">Pay ${inr(ST.part?halfOf(t):t.p)}</button>`}});
+
+add('done','Trip & join','Registered',`Message depends on who is using the app. Herself: "You're in, Sangeeta" and "अब आपकी बारी". Someone booking for her: "Sangeeta is in" and "अब उनकी बारी". Details follow the trip she joined.`,{noSos:1,
+body:()=>{const t=TT(),p=PK(),ind=indore();return `<div style="text-align:center;padding-top:18px"><div style="position:relative;width:110px;height:110px;margin:0 auto 20px"><div class="av p" style="width:110px;height:110px;background:var(--pri);color:#fff">${ic('check',50)}</div><i style="position:absolute;top:2px;right:-6px;width:16px;height:16px;border-radius:50%;background:var(--org)"></i><i style="position:absolute;bottom:6px;left:-10px;width:10px;height:10px;border-radius:50%;background:var(--org)"></i><i style="position:absolute;top:-8px;left:20px;width:8px;height:8px;border-radius:50%;background:#C9B2E8"></i></div>
+<h1 class="disp" style="font-size:32px">${me()?`You're in, ${esc(fn())}!`:`${esc(fn())} is in!`}</h1><p style="margin:10px 0 20px;font-size:20px;font-weight:700;color:var(--org)">${me()?'अब आपकी बारी':'अब उनकी बारी'}</p></div>
+<div class="card"><b>${t.n}</b><p class="sm mut">${t.d} · ${t.from}</p><div class="li"><span class="ico">${ic('pin',18)}</span><div class="t">${p[0]}<small>${ind?'Report by':'Pickup around'} ${p[1]}, ${t.d1}</small></div></div><div class="li"><span class="ico">${ic('users',18)}</span><div class="t">Group opens ${t.go}<small>${W('You are','She is')} added automatically, plus a WhatsApp invite</small></div></div></div>`},
+foot:()=>`<button class="btn" data-go="hubUp">View my trip</button><a class="lnk" data-go="trips">Go to My Trips</a>`});
+/* ---- hub ---- */
+const hubTabs=(open,tab)=>`<div class="tabs2"><button class="${tab==='i'?'on':''}" data-swap="${open?'hubOpenItin':'hubUp'}">Itinerary</button><button class="${tab==='g'?'on':''} ${open?'':'dis'}" data-swap="${open?'hubOpen':'hubUp'}">${open?'':ic('lock',14)} Group${open?'':' · opens '+TT().go}</button></div>`;
+const dayCard=(t,d,items)=>`<div class="card" style="margin-bottom:12px"><div class="row sb"><b>${t}</b><span class="chip sm t">${d}</span></div><div class="tl">${items.map(i=>`<div><b>${i[0]}</b><small>${i[1]}</small></div>`).join('')}</div></div>`;
+const hubHead=open=>{const t=TT();return `${heroDet(t.k,150)}<h2 class="disp" style="font-size:22px;margin:16px 0 2px">${t.n}</h2><p class="mut sm">Starts in ${t.in} days · ${t.d1}</p>`};
+const mgrFoot=()=>`<button class="btn o" style="gap:10px">${ic('phone',20)} Call trip manager · ${MGR.ph}</button>`;
+const hubDays=()=>{const t=TT(),D=DD(),p=PK();return D.hub.map((h,i)=>dayCard(h.t,h.d,h.items.map((it,j)=>(i===0&&j===0&&t.from==='Indore')?[`${p[1]} Pickup at ${p[0]}`,'Report 15 minutes before']:it))).join('')};
+const hubItin=open=>{const t=TT(),p=PK(),ind=indore();return `${hubHead(open)}${hubTabs(open,'i')}
+<div class="card t" style="box-shadow:none;margin-bottom:12px"><b>Before you go</b>${[[`Pickup chosen: ${p[0]}, ${p[1]}`,1],[t.dur==='1 day'?'Carry a government photo ID':'Upload ID for the stay',0],['Send plan to family',1],[t.k==='ujjain'?'Wear a saree or salwar suit for the temple':t.k==='kerala'?'Pack light cotton clothes and a hat':'Pack a light shawl and walking shoes',0]].map(x=>`<div class="row" style="padding:7px 0"><span class="av ${x[1]?'p':''}" style="width:22px;height:22px;flex:none;${x[1]?'':'background:#fff'}">${x[1]?ic('check',13):''}</span><span class="sm" style="font-weight:600">${x[0]}</span></div>`).join('')}</div>
+${hubDays()}
+<div class="card row g12"><span class="av p">PR</span><div style="flex:1"><b>${MGR.n}</b><p class="xs mut">Trip manager · ${MGR.ph}</p></div><button class="ib" style="background:var(--org);color:#fff">${ic('phone',18)}</button></div>`};
+add('hubUp','Trip hub & group','Trip hub (group not open yet)',`Group tab shows when it opens. Every day of this trip is fully visible, "Before you go" comes first, and the trip manager's number is always in the bottom button. Shows whichever trip you opened.`,{noSos:0,
+body:()=>hubItin(false),foot:mgrFoot});
+add('hubOpenItin','Trip hub & group','Trip hub (group open): itinerary',`Same hub once the group has opened. Switch between Itinerary and Group with the tabs.`,{
+body:()=>hubItin(true),foot:mgrFoot});
+add('hubOpen','Trip hub & group','Trip hub (group open): initial chat',`When the group opens, the Group tab shows the first conversation: the manager's welcome and pinned notice, and members saying hello. Manager's call button sits above the message box.`,{
+body:()=>{const p=PK(),ind=indore();return `${hubHead(true)}${hubTabs(true,'g')}
+<div class="card t row g12" style="box-shadow:none;margin-bottom:12px">${ic('users',22)}<div style="flex:1"><b class="sm">Your group is open</b><p class="xs mut">11 women · see everyone's number</p></div><button class="chip sm on" data-go="members">Members</button></div>
+<div class="col" style="gap:10px"><span class="sysm">Group created</span>
+<div class="msg" style="background:var(--tint);box-shadow:none"><small>Pinned · ${MGR.n} (trip manager)</small>Welcome, everyone! ${ind?`Reporting time is ${p[1]} at ${p[0]}.`:`We meet at ${p[0]} around ${p[1]}.`} Please carry an ID.</div>
+<div class="msg"><small>Meena Joshi</small>Hi all! Meena from Bhopal. First group trip for me.</div><div class="msg"><small>Kavita Rao</small>Hello! So excited. Anyone from ${ind?'Indore':TT().from}?</div><div class="msg me">Namaste everyone, see you soon</div><div class="msg"><small>${MGR.n} (trip manager)</small>Share your photos here anytime, before, during and after.</div></div>`},
+foot:()=>`<div class="mgr"><span class="av p">PR</span><div><b class="sm">${MGR.n}</b><p class="xs mut">Trip manager</p></div><span class="call">${ic('phone',16)} Call</span></div><div class="row"><button class="ib" style="box-shadow:none;background:#EEF0F5">${ic('plus',18)}</button><div class="field" style="flex:1;padding:11px 14px;border-radius:99px"><span class="mut sm">Message the group</span></div><button class="ib" style="background:var(--pri);color:#fff">${ic('send',18)}</button></div>`});
+
+const day=(t,tag,st,items)=>`<div class="card" style="margin-bottom:12px;${st==='today'?'background:var(--orgt);box-shadow:none':''}"><div class="row sb"><b>${t}</b><span class="chip sm ${st==='today'?'on':'t'}" ${st==='today'?'style="background:var(--org);border-color:var(--org)"':''}>${tag}</span></div><div class="tl">${items.map(i=>`<div class="${st==='done'?'done':''}"><b>${i[0]}</b><small>${i[1]}</small></div>`).join('')}</div></div>`;
+add('live','Trip hub & group','Live trip',`Removed the "Live location" tile since its purpose was unclear. Now it shows today and the other days of the itinerary, and a bottom button calls the trip manager. SOS is the floating button.`,{
+body:()=>`${topb('Jaipur Heritage Weekend')}<div class="card o" style="margin-bottom:12px"><div class="row sb"><span class="chip sm on" style="background:var(--org);border-color:var(--org)"><span class="rdot" style="background:#fff"></span>LIVE · Day 2 of 3</span><span class="xs" style="font-weight:700">Sun 13 Dec</span></div><h3 class="disp" style="margin:10px 0 2px;font-size:21px">Amber Fort at 8:30</h3><p class="sm">Meet at: main gate · 40 min away</p><button class="btn s" style="margin-top:12px;width:100%">I've reached the stop</button></div>
+<div class="row g12" style="margin-bottom:14px"><div class="card" style="flex:1;text-align:center;padding:12px" data-go="chat"><span style="color:var(--pri)">${ic('chat')}</span><p class="xs" style="font-weight:700;margin-top:4px">Group <span class="badge">3</span></p></div><div class="card" style="flex:1;text-align:center;padding:12px" data-go="members"><span style="color:var(--pri)">${ic('users')}</span><p class="xs" style="font-weight:700;margin-top:4px">Members · 11</p></div></div>
+${day('Day 2 · Amber Fort','Today','today',[['8:30 am Amber Fort','Guided tour, 2 hours'],['12:30 pm Lunch near Jal Mahal','Veg thali included'],['2:30 pm City Palace and Jantar Mantar','Free time to shop after']])}
+${day('Day 3 · Block printing and goodbye','Mon 14 Dec','up',[['9:30 am Hand-block printing workshop','Print your own scarf'],['12:30 pm Lunch and shopping','Bapu Bazaar'],['3:00 pm Drop at airport or station','Flights after 6 pm']])}
+${day('Day 1 · Arrival','Sat 12 Dec','done',[['Hawa Mahal and Johari Bazaar','Done'],['Dinner and check-in','Done']])}`,
+foot:mgrFoot});
+
+const sosSheet=live=>`<div class="row sb"><h3 class="disp" style="font-size:22px">Need help?</h3><button class="ib" data-back>${ic('x',18)}</button></div><p class="sm mut" style="margin:4px 0 14px">Hold the button to send your live location.</p>
+${live?`<div class="card t" style="box-shadow:none;margin-bottom:14px"><p class="xs mut" style="font-weight:700;letter-spacing:.08em;margin-bottom:8px">YOUR LIVE TRIP · JAIPUR HERITAGE WEEKEND</p><div class="row g12"><span class="av p" style="width:46px;height:46px">PR</span><div style="flex:1"><b>${MGR.n}</b><p class="xs mut">Trip manager · ${MGR.ph}</p></div><button class="btn s o">${ic('phone',16)} Call</button></div></div>`:''}
+<button class="sosbig">${ic('shield')} Alert my family${live?' and trip manager':''}</button>
+<div class="col" style="margin-top:14px"><div class="li card" style="padding:12px"><span class="ico">${ic('phone',18)}</span><div class="t">Call Rohit (family)<small>+91 98931 22110</small></div></div><div class="li card" style="padding:12px"><span class="ico">${ic('phone',18)}</span><div class="t">Police<small>112</small></div></div><div class="li card" style="padding:12px"><span class="ico">${ic('phone',18)}</span><div class="t">Women helpline<small>181</small></div></div><div class="li card" style="padding:12px"><span class="ico">${ic('phone',18)}</span><div class="t">Ambulance<small>108</small></div></div></div>`;
+add('sos','Trip hub & group','SOS (no live trip)',`The floating SOS button is on every in-app screen. The big alert button is much more visible than before. Without a live trip it shows family and emergency numbers.`,{base:'@prev',baseDef:'home',noSos:1,
+sheet:()=>sosSheet(ST.returning)});
+add('sosLive','Trip hub & group','SOS (during live trip)',`When a trip is live, the trip manager's name and a call button appear at the top of SOS, above the other options.`,{base:'live',noSos:1,
+sheet:()=>sosSheet(true)});
+
+const composer=`<div class="row"><button class="ib" style="box-shadow:none;background:#EEF0F5">${ic('plus',18)}</button><div class="field" style="flex:1;padding:11px 14px;border-radius:99px"><span class="mut sm">Message the group</span></div><button class="ib" style="background:var(--pri);color:#fff">${ic('send',18)}</button></div>`;
+add('chat','Trip hub & group','Group: chat',`WhatsApp-like on purpose. Pinned notice from the trip manager, photos, everyone's number is one tap away in Members.`,{
+body:()=>`<div class="tp"><button class="ib" data-back>${ic('back')}</button><div style="flex:1;margin-left:12px"><b>Jaipur Heritage Dec '26</b><p class="xs mut">11 women · ${MGR.n} (trip manager)</p></div><button class="ib" data-go="members">${ic('users',18)}</button></div>
+<div class="tabs2" style="margin-top:0"><button class="on">Chat</button><button data-swap="members">Members</button></div>
+<div class="card t row g12" style="padding:10px 12px;margin-bottom:12px;box-shadow:none">${ic('bell',16)}<p class="xs"><b>Pinned:</b> Reporting 7:30 am at the lobby. Carry your ID.</p></div>
+<div class="col" style="gap:10px"><div class="msg"><small>Meena Joshi</small>Reached the fort gate! Weather is perfect.</div><div class="msg"><small>Kavita Rao</small>Photos from morning<div class="photo">${svg('jaipur')}</div></div><div class="msg me">Almost there, save me a seat for dinner</div><div class="msg"><small>${MGR.n} (trip manager)</small>Dinner at 8. Veg and Jain tables are ready.</div></div>`,
+foot:()=>composer});
+
+const ppl=[['Pooja Rao','Pune','Trip manager',4,'PR'],['Meena Joshi','Bhopal','Ghumakkad',3,'MJ'],['Kavita Rao','Indore','Musafir',2,'KR'],['Anita Desai','Surat','Musafir',2,'AD'],['Farida Khan','Lucknow','Naya Safar',1,'FK'],['Neelam Singh','Jaipur','Musafir',2,'NS']];
+add('members','Trip hub & group','Group: members',`Everyone sees everyone's number. Tap a member to see their title and trips in common. Save all contacts turns a trip into a lasting circle.`,{
+body:()=>`<div class="tp"><button class="ib" data-back>${ic('back')}</button><div style="flex:1;margin-left:12px"><b>Jaipur Heritage Dec '26</b><p class="xs mut">11 women</p></div></div>
+<div class="tabs2" style="margin-top:0"><button data-swap="chat">Chat</button><button class="on">Members</button></div>
+${ppl.map((p,i)=>`<div class="li" data-go="memberCard"><span class="av ${['','o','p'][i%3]}">${p[4]}</span><div class="t">${p[0]}<small>${p[1]} · +91 9${i}8** **${i}2${i}</small></div><span class="chip sm ${i===0?'on':'t'}">${i===0?'Trip manager':p[2]}</span></div>`).join('')}
+<button class="btn g" style="margin-top:12px">Save all contacts</button>`});
+
+add('memberCard','Trip hub & group','Member card',`Title and stamps, trips in common, and direct call or WhatsApp.`,{base:'members',
+sheet:()=>`<div class="row sb"><span></span><button class="ib" data-back>${ic('x',18)}</button></div><div style="text-align:center;margin-top:-18px"><span class="av l o" style="margin:0 auto">MJ</span><h3 class="disp" style="margin-top:10px">Meena Joshi</h3><p class="sm mut">Bhopal · +91 98270 55512</p><span class="chip on sm" style="margin-top:8px">Ghumakkad · 7 stamps</span></div>
+<div class="row g12" style="margin:16px 0"><div class="card t" style="flex:1;text-align:center;box-shadow:none"><span style="font-size:22px;font-weight:800">2</span><p class="xs">Trips together</p></div><div class="card o" style="flex:1;text-align:center"><span style="font-size:22px;font-weight:800">7</span><p class="xs">Total trips</p></div></div>
+<p class="xs mut" style="font-weight:800;letter-spacing:.1em">GROUPS IN COMMON</p><div class="li"><span class="ico">${ic('users',16)}</span><div class="t">Udaipur Udaan<small>Oct 2026</small></div></div><div class="li"><span class="ico">${ic('users',16)}</span><div class="t">Pushkar and Ajmer<small>Sep 2026</small></div></div>
+<div class="row g12" style="margin-top:10px"><button class="btn s" style="flex:1">${ic('phone',16)} Call</button><button class="btn s o" style="flex:1">${ic('chat',16)} WhatsApp</button></div>`});
+
+add('post','Trip hub & group','Past trip',`After the trip she gets a new stamp for her passport, with plain words on what is next. No points. The group is one tap away. The album holds the group's photos.`,{
+body:()=>`${topb('Udaipur Lakes')}<div class="card t" style="text-align:center;box-shadow:none"><p class="xs mut" style="font-weight:700;letter-spacing:.1em">NEW STAMP EARNED</p><div style="width:128px;margin:12px auto">${ILLUS.stamp({done:1,photo:HSD.ALBUM.imgs[0],note:'Udaipur Udaan',name:'Udaipur',sub:'Oct 2026'})}</div><p class="sm">Added to your passport · <b>2 more trips</b> to become a Musafir</p></div>
+<div class="row g12" style="margin:12px 0"><button class="btn s o" style="flex:1" data-go="chat">${ic('chat',16)} Open group</button><button class="btn s g" style="flex:1" data-go="members">${ic('users',16)} Members</button></div>
+${sh('Trip album',HSD.ALBUM.imgs.length+' photos','album')}<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px">${HSD.ALBUM.imgs.slice(0,6).map((s,i)=>`<div data-go="album" style="aspect-ratio:1;border-radius:14px;overflow:hidden;${i===0?'grid-column:span 2;grid-row:span 2;aspect-ratio:auto':''}"><img src="${s}" alt="" draggable="false" style="width:100%;height:100%;object-fit:cover;display:block"></div>`).join('')}</div>
+<div class="card" style="margin-top:14px"><b class="sm">How was it?</b><div class="row" style="margin-top:6px;color:var(--org)">${[1,2,3,4,5].map(i=>`<span style="opacity:${i<5?1:.25}">${ic('star',26)}</span>`).join('')}</div></div>
+<div class="card t row g12" style="margin-top:12px;box-shadow:none">${ic('file',22)}<div style="flex:1"><b class="sm">Write your "Dear Me" letter</b><p class="xs mut">We'll post it back to you in 6 months</p></div></div>
+<a class="lnk">Hide this trip from my history</a>`});
+add('album','Trip hub & group','Past trip album',`The group's photos from the Udaipur trip. Swipe through them, or tap a thumbnail below.`,{
+body:()=>`${topb('Trip album')}<h3 class="disp" style="font-size:20px;margin-bottom:2px">${HSD.ALBUM.name}</h3><p class="sm mut" style="margin-bottom:12px">${HSD.ALBUM.group} · ${HSD.ALBUM.imgs.length} photos</p>${slides(HSD.ALBUM.imgs,300,26)}<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:12px">${HSD.ALBUM.imgs.map(s=>`<div style="aspect-ratio:1;border-radius:14px;overflow:hidden"><img src="${s}" alt="" draggable="false" style="width:100%;height:100%;object-fit:cover;display:block"></div>`).join('')}</div>`});
+
+/* ---- profile ---- */
+add('profile','Profile & more','Profile',`Profile is now the fourth tab in the bottom bar, so the top of every screen only has the logo and the notification bell.`,{nav:'profile',
+body:()=>`${hdr()}<h2 class="disp" style="margin:10px 0 14px">Profile</h2><div class="card" style="text-align:center"><span class="av l p" style="margin:0 auto">${ini(ST.name)}</span><h3 class="disp" style="margin-top:10px">${esc(ST.name)}</h3><p class="sm mut">${esc(ST.city)} · +91 ${esc(ST.phone)}</p><button class="chip t sm" style="margin-top:10px" data-go="passport">Naya Safar · 1 stamp</button></div>
+<div class="card" style="margin-top:12px;padding:4px 14px">${[['user','Personal details','Name, photo, age, city'],['globe','Language',langName()],['users','Family and helpers','Rohit (husband) can book for you'],['cal','Free days and trip taste',ST.types.join(', ')],['bag','Food and accessibility',ST.food+(ST.acc.length?' · '+ST.acc.join(', '):'')],['card','Payments and invoices',''],['bell','Notifications and WhatsApp',''],['shield','Safety, help and privacy','']].map(x=>`<div class="li"><span class="ico">${ic(x[0],18)}</span><div class="t">${x[1]}${x[2]?`<small>${x[2]}</small>`:''}</div>${ic('chev',16)}</div>`).join('')}</div><a class="lnk" style="color:var(--org)">Log out</a>`});
+
+add('passport','Profile & more','My Passport',`Replaces XP and levels with things she already understands: stamps in a passport, a simple title (Naya Safar, Musafir, Ghumakkad, Safar Sakhi), homely badges and a real reward. The collected stamp is a polaroid; the rest are locked and faded.`,{
+body:()=>`${topb('My Passport')}<div class="card t" style="box-shadow:none;text-align:center"><p class="xs mut" style="font-weight:700;letter-spacing:.1em">YOUR TITLE</p><h2 class="disp" style="font-size:30px;margin:4px 0;color:var(--pri)">Naya Safar</h2><p class="sm mut">New traveller</p>
+<div style="margin:16px 4px 10px"><div class="bar"><i style="width:33%"></i></div><p class="xs mut" style="margin-top:6px">1 of 3 trips</p></div><p class="sm"><b>2 more trips</b> to become a <b>Musafir</b></p></div>
+<div class="chips" style="margin-top:12px;justify-content:center">${[['Naya Safar',1],['Musafir',0],['Ghumakkad',0],['Safar Sakhi',0]].map(t=>`<span class="chip sm ${t[1]?'on':''}">${t[0]}</span>`).join('')}</div>
+${sh('Your stamps')}<div class="pgrid">${[{done:1,photo:HSD.ALBUM.imgs[0],note:'Udaipur Udaan',name:'Udaipur',sub:'Oct 2026'},{name:'Mandu',sub:'Heritage',art:ILLUS.heritage()},{name:'Jaipur',sub:'Heritage',art:ILLUS.hawaMahal()},{name:'Ujjain',sub:'Spiritual',art:ILLUS.spiritual()},{name:'Maheshwar',sub:'Narmada ghat',art:ILLUS.ghat()},{name:'Kerala',sub:'Backwaters',art:ILLUS.backwaters()}].map(ILLUS.stamp).join('')}</div>
+${sh('Badges')}<div class="card" style="padding:4px 14px">${[['Pehla Kadam','First trip completed',1],['Nayi Saheli','Made a friend on a trip',1],['Saheli Circle','Travelled with 3 friends from earlier trips',0],['Samay Ki Pakki','Reached on time on 3 trips',0]].map(b=>`<div class="li"><span class="bdg ${b[2]?'':'off'}">${ILLUS.badges[b[0]]()}</span><div class="t" style="${b[2]?'':'opacity:.55'}">${b[0]}<small>${b[1]}</small></div>${b[2]?'':ic('lock',16)}</div>`).join('')}</div>
+<div class="card o" style="margin-top:14px;box-shadow:none"><b>Your reward</b><p class="sm" style="margin-top:4px">Collect 3 stamps and get <b>₹200 off</b> your next trip.</p></div>
+<button class="btn g" style="margin-top:12px">Share my passport on WhatsApp</button>`});
+
+/* ======== engine ======== */
+const ORDER=['Onboarding','Home & browse','Trip & join','Trip hub & group','Profile & more'];
+const SECN={'Onboarding':'Splash, language, account, and the personalisation steps. Wording adapts to "me" or "her".','Home & browse':'Bottom nav (icon above label, always visible): Home, My Trips, Discover, Profile. Notifications from the bell.','Trip & join':'Trip details through to registered, including vehicle sheet, stay sheet, locked group, pickup, details and payment.','Trip hub & group':'After joining: hub, group, live trip, SOS, chat, members, past trip.','Profile & more':'Profile and gamification.'};
+let cur='splash',hist=[],first=true,timer;
+
+function frame(id,gal){
+  const s=S[id];
+  const baseId=s.base==='@prev'?(gal?s.baseDef:(hist.length?hist[hist.length-1]:s.baseDef)):s.base;
+  const b=baseId?S[baseId]:s;
+  const dark=b.dark;
+  const body=b.body(),foot=b.foot?b.foot():'',nv=b.nav?nav(b.nav):'';
+  const inApp=b.sec!=='Onboarding'&&!dark;
+  const showSos=inApp&&!(s.noSos&&!s.sheet);
+  const bottom=nv?96:foot?(foot.includes('composer')||foot.includes('mgr')?150:96):24;
+  return `<div class="phone ${dark?'dark':''}"><div class="status"><span>9:41</span><span class="row" style="gap:5px">${ic('live',13)} 5G</span></div>
+  <div class="body" ${b.dark?'style="padding:0"':''}>${body}</div>${foot?`<div class="foot">${foot}</div>`:''}${nv}${showSos?`<button class="sosfab" data-go="sos" style="bottom:${bottom}px">SOS</button>`:''}${s.sheet?`<div class="scrim" data-back></div><div class="sheet">${s.sheet()}</div>`:''}</div>`;
+}
+function draw(){
+  document.getElementById('live').innerHTML=frame(cur);
+  const s=S[cur];
+  document.getElementById('note').innerHTML=`<p class="k">${s.sec}</p><h3 class="disp">${s.name}</h3><p>${s.note}</p><button class="reset" data-reset>Restart from splash</button>`;
+  document.querySelectorAll('#list .sl').forEach(e=>e.classList.toggle('on',e.dataset.id===cur));
+  clearTimeout(timer);if(cur==='splash'&&first){timer=setTimeout(()=>{if(cur==='splash')go('language')},2600)}
+}
+function refresh(){const b=document.querySelector('#live .body');const y=b?b.scrollTop:0;draw();const nb=document.querySelector('#live .body');if(nb)nb.scrollTop=y}
+function go(id,keep){
+  if(id==='@home')id=ST.returning?'homeLive':'home';
+  if(!S[id])return;
+  if(!keep)hist.push(cur);cur=id;first=false;draw();
+  const nb=document.querySelector('#live .body');if(nb)nb.scrollTop=0;
+}
+function openAt(id){hist=[];if(id==='homeLive'||id==='live'||id==='sosLive')ST.returning=true;if(id==='home')ST.returning=false;cur=id;first=false;draw();setTab('exp');window.scrollTo(0,0)}
+function setTab(t){document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on',v.id===t));document.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('on',b.dataset.tab===t));if(t==='gal')buildGallery()}
+
+document.addEventListener('click',e=>{
+  const t=e.target;
+  const tb=t.closest('[data-tab]');if(tb){setTab(tb.dataset.tab);return}
+  const op=t.closest('[data-open]');if(op){openAt(op.dataset.open);return}
+  if(t.closest('[data-reset]')){hist=[];cur='splash';first=false;ST.returning=false;draw();return}
+  const li=t.closest('#list .sl');if(li){openAt(li.dataset.id);return}
+  const ph=t.closest('#live .phone');if(!ph)return;
+  const st=t.closest('.tg:not([data-toggle])');if(st){st.classList.toggle('on');return}
+  const ga=t.closest('[data-gal]');if(ga&&ph.contains(ga)){const g=ga.parentNode.querySelector('.gal2');if(g)g.scrollBy({left:g.clientWidth*Number(ga.dataset.gal),behavior:'smooth'});return}
+  const el=t.closest('[data-set],[data-toggle],[data-tog],[data-cyc],[data-go],[data-back],[data-tab-go],[data-swap]');
+  if(!el||!ph.contains(el))return;
+  const d=el.dataset;let changed=false;
+  if(d.trip){if(ST.trip!==d.trip){ST.trip=d.trip;ST.pick=0;ST.veh=0}}
+  if(d.veh!==undefined)ST.veh=Number(d.veh);
+  if(d.set){const i=d.set.indexOf('=');ST[d.set.slice(0,i)]=cv(d.set.slice(i+1));changed=true}
+  if(d.toggle){ST[d.toggle]=!ST[d.toggle];changed=true}
+  if(d.tog){const [k,v]=d.tog.split('|');const a=ST[k];const i=a.indexOf(v);if(i>-1)a.splice(i,1);else a.push(v);changed=true}
+  if(d.cyc){const [k,n]=d.cyc.split('|');ST[k]=(ST[k]+1)%Number(n);changed=true}
+  if(d.back!==undefined){const p=hist.pop();if(p){cur=p;draw()}else if(changed)refresh();return}
+  if(d.tabGo){hist=[];go(d.tabGo,1);return}
+  if(d.swap){go(d.swap,1);return}
+  if(d.go){go(d.go);return}
+  if(changed)refresh();
+});
+document.addEventListener('scroll',e=>{const g=e.target;if(!g||!g.classList||!g.classList.contains('gal2'))return;const i=Math.round(g.scrollLeft/(g.clientWidth||1));g.parentNode.querySelectorAll('.gdots i').forEach((d,j)=>d.classList.toggle('on',j===i))},true);
+document.addEventListener('input',e=>{const k=e.target.dataset&&e.target.dataset.in;if(k){ST[k]=e.target.value;if(k==='q'){const d=document.getElementById('dlist');if(d)d.innerHTML=discList()}}});
+
+function buildList(){let lh='';ORDER.forEach(sec=>{lh+=`<h5>${sec}</h5>`;Object.values(S).filter(s=>s.sec===sec).forEach(s=>{const n=Object.keys(S).indexOf(s.id)+1;lh+=`<button class="sl" data-id="${s.id}"><span>${n}</span>${s.name}</button>`})});document.getElementById('list').innerHTML=lh}
+function buildGallery(){let gh='';ORDER.forEach(sec=>{gh+=`<div class="gsec"><h2 class="disp">${sec}</h2><p>${SECN[sec]}</p><div class="ggrid">`;Object.values(S).filter(s=>s.sec===sec).forEach(s=>{const n=Object.keys(S).indexOf(s.id)+1;gh+=`<div class="gitem" data-open="${s.id}"><div class="gscale">${frame(s.id,1).replace('class="phone','class="phone static')}</div><div class="gl"><b>${n}</b>${s.name}</div></div>`});gh+='</div></div>'});document.getElementById('gallery').innerHTML=gh}
+buildList();buildGallery();draw();
+</script>
+</body>
+</html>
